@@ -3,5 +3,9 @@ uuid = "3c3ff5e7-c68c-4a09-80d1-9526a1e9878a"
 authors = ["lorenzoh <lorenz.ohly@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+CodeTracking = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
+StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
+
 [compat]
 julia = "1"
