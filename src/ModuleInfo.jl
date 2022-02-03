@@ -112,9 +112,10 @@ function gathermodulesymbols!(db, m::Module)
 
         instance = getfield(m, symbol)
         kind = symbolkind(m, symbol)
+        symbol_id = m === instance ? moduleid : "$moduleid.$symbol"
 
         push!(db[:symbols], (
-            symbol_id = "$moduleid.$symbol",
+            symbol_id = symbol_id,
             name = string(symbol),
             public = Base.isexported(m, symbol),
             kind = kind,
@@ -209,7 +210,13 @@ function getdocstrings(m::Module, symbol::Symbol)
     isnothing(multidoc) && return DocString[]
     docstrs = collect(values(multidoc.docs))
     #docstrings = [only(Base.Docs.catdoc(d.text...)) for d in docstrs]
-    docstrings = [Base.Docs.catdoc(d.text...)[1] for d in docstrs]
+
+    docstrings = []
+    for d in docstrs
+        text = Base.Docs.catdoc(d.text...)
+        isnothing(text) && continue
+        push!(docstrings, text[1])
+    end
     datas = [d.data for d in docstrs]
     return [DocString(m, symbol, docstring, data)
         for (docstring, data) in zip(docstrings, datas)]
