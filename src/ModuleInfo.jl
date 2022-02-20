@@ -68,16 +68,19 @@ function moduleinfo!(db, m::Module)
     info = pkgfiles(m)
     pkgid = string(info.id.uuid)
 
-    # Add package entry
-    push!(db[:packages], (
-        package_id = pkgid,
-        name = info.id.name,
-        basedir = info.basedir
-    ))
+    # If `m` is a top-level module
+    if parentmodulerec(m) == m
+        # Add package entry
+        push!(db[:packages], (
+            package_id = pkgid,
+            name = info.id.name,
+            basedir = info.basedir
+        ))
 
     # Add source files of package
-    for file in info.files
-        push!(db[:sourcefiles], (package_id = pkgid, file = file))
+        for file in info.files
+            push!(db[:sourcefiles], (package_id = pkgid, file = file))
+        end
     end
 
     # Add module
@@ -102,6 +105,8 @@ getsymbolid(T) = join((getmoduleid(parentmodule(T)), string(nameof(T))), ".")
 
 function gathermodulesymbols!(db, m::Module)
     moduleid = getmoduleid(m)
+    childmodules = Module[]
+
     for symbol in names(m, all=true)
         isdefined(m, symbol) || continue
         startswith(string(symbol), "#") && continue
@@ -125,10 +130,14 @@ function gathermodulesymbols!(db, m::Module)
 
         # Recurse into submodules
         if (kind == "module") && (parentmodule(instance) == m) && (m != instance)
-            gathermodulesymbols!(db, instance)
+            push!(childmodules, instance)
         end
         gathermethods!(db, m, symbol)
         gatherdocstring!(db, m, symbol)
+    end
+
+    for m in childmodules
+        moduleinfo!(db, m)
     end
 end
 
@@ -161,8 +170,9 @@ parentmodulerec(e::E) where {E<:Enum} = parentmodulerec(E)
 
 function isfrommodule(m::Module, symbol)
     isdefined(m, symbol) || return false
+    isconst(m, symbol) && return true
     x = getfield(m, symbol)
-    parentmodulerec(x) == m
+    parentmodule(x) == m
 end
 
 
@@ -224,8 +234,13 @@ end
 
 function getmultidoc(m::Module, symbol::Symbol)
     binding = Base.Docs.Binding(m, symbol)
-    docs = getfield(m, Docs.META)
-    multidoc = get(docs, binding, nothing)
+    try
+        docs = getproperty(m, Docs.META)
+        return get(docs, binding, nothing)
+    catch e
+        e isa UndefVarError && return nothing
+        rethrow()
+    end
 end
 
 end  # module
