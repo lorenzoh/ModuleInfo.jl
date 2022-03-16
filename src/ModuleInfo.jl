@@ -79,7 +79,9 @@ function moduleinfo!(db, m::Module)
 
     # Add source files of package
         for file in info.files
-            push!(db[:sourcefiles], (package_id = pkgid, file = file))
+            if isfile(joinpath(pkgdir(m), file))
+                push!(db[:sourcefiles], (package_id = pkgid, file = file))
+            end
         end
     end
 
