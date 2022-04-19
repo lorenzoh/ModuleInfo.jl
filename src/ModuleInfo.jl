@@ -2,6 +2,7 @@ module ModuleInfo
 
 using CodeTracking: pkgfiles, whereis
 using StructArrays: StructArray
+using InlineTest
 
 
 const Maybe{T} = Union{Nothing, T}
@@ -109,17 +110,20 @@ function gathermodulesymbols!(db, m::Module)
     moduleid = getmoduleid(m)
     childmodules = Module[]
 
-    for symbol in names(m, all=true)
-        isdefined(m, symbol) || continue
-        startswith(string(symbol), "#") && continue
-        symbol == :eval && continue
-        symbol == :include && continue
+    for subm in submodules(m)
+        moduleinfo!(db, subm)
+    end
 
-        isfrommodule(m, symbol) || continue
+    for symbol in names(m, all=true)
+        if (!isdefined(m, symbol) || symbol === :eval ||
+                symbol == :include || !isfrommodule(m, symbol) || startswith(string(symbol), "#"))
+            continue
+        end
 
         instance = getfield(m, symbol)
         kind = symbolkind(m, symbol)
         symbol_id = m === instance ? moduleid : "$moduleid.$symbol"
+
 
         push!(db[:symbols], (
             symbol_id = symbol_id,
@@ -131,9 +135,9 @@ function gathermodulesymbols!(db, m::Module)
         ))
 
         # Recurse into submodules
-        if (kind == "module") && (parentmodule(instance) == m) && (m != instance)
-            push!(childmodules, instance)
-        end
+        #if (kind == "module") && (parentmodule(instance) == m) && (m != instance)
+        #    push!(childmodules, instance)
+        #end
         gathermethods!(db, m, symbol)
         gatherdocstring!(db, m, symbol)
     end
@@ -170,11 +174,27 @@ end
 parentmodulerec(e::E) where {E<:Enum} = parentmodulerec(E)
 
 
-function isfrommodule(m::Module, symbol)
+function submodules(m::Module)
+    return map(s -> getfield(m, s), filter(names(m, all=true)) do s
+        isdefined(m, s) || return false
+        subm = getfield(m, s)
+        return subm isa Module && subm !== m && parentmodule(subm) === m
+    end)
+end
+
+isfrommodule(m::Module, symbol) = isfrommodule(m, symbol, submodules(m))
+function isfrommodule(m::Module, symbol, submodules)
+    if any(isfrommodule(sm, symbol) for sm in submodules)
+        return false
+    end
     isdefined(m, symbol) || return false
-    isconst(m, symbol) && return true
     x = getfield(m, symbol)
-    parentmodule(x) == m
+    try
+        return parentmodule(x) === m
+    catch
+        isconst(m, symbol) && return true
+        return false
+    end
 end
 
 
@@ -243,6 +263,31 @@ function getmultidoc(m::Module, symbol::Symbol)
         e isa UndefVarError && return nothing
         rethrow()
     end
+end
+
+module A
+    h(z) = 4
+
+    module B
+        f(x::Float16) = 1
+        g(y) = 3
+        export f
+    end
+
+    f(a::Int) = 2
+    using .B
+
+    export f, B
+end
+using .A
+
+@testset "isfrommodule" begin
+    @test !isfrommodule(A, :f)
+    @test isfrommodule(B, :f)
+    @test isfrommodule(B, :g)
+    @test !isfrommodule(A, :g)
+    @test isfrommodule(A, :h)
+    @test !isfrommodule(B, :h)
 end
 
 end  # module
