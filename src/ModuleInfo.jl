@@ -154,11 +154,12 @@ getsymbolid(m, symbol) = join(fullname(m), ".") * "." * string(symbol)
 function gatherdocstring!(db, m, symbol)
     docstrs = getdocstrings(m, symbol)
     isempty(docstrs) && return
-    s = join([d.docstring for d in docstrs], "\n\n---\n\n")
-    push!(db[:docstrings], (
-        symbol_id = getsymbolid(m, symbol),
-        docstring = s,
-    ))
+    docstring = join([d.docstring for d in docstrs], "\n\n---\n\n")
+
+    instance = getfield(m, symbol)
+    symbol_id = m === instance ? getmoduleid(m) : getsymbolid(m, symbol)
+
+    push!(db[:docstrings], (; docstring, symbol_id))
 end
 
 
