@@ -125,19 +125,15 @@ function gathermodulesymbols!(db, m::Module)
         symbol_id = m === instance ? moduleid : "$moduleid.$symbol"
 
 
-        push!(db[:symbols], (
+        push!(db[:symbols], (;
             symbol_id = symbol_id,
             name = string(symbol),
             public = Base.isexported(m, symbol),
             kind = kind,
-            module_id = moduleid,
             instance,
+            module_id = moduleid,
         ))
 
-        # Recurse into submodules
-        #if (kind == "module") && (parentmodule(instance) == m) && (m != instance)
-        #    push!(childmodules, instance)
-        #end
         gathermethods!(db, m, symbol)
         gatherdocstring!(db, m, symbol)
     end
@@ -159,7 +155,7 @@ function gatherdocstring!(db, m, symbol)
     instance = getfield(m, symbol)
     symbol_id = m === instance ? getmoduleid(m) : getsymbolid(m, symbol)
 
-    push!(db[:docstrings], (; docstring, symbol_id))
+    push!(db[:docstrings], (; symbol_id, docstring))
 end
 
 
@@ -210,8 +206,8 @@ function gathermethods!(db, m::Module, symbol::Symbol)
         push!(db[:methods], (
             method_id = "$(symbol_id)_$i",
             symbol_id = symbol_id,
-            file = file,
             line = line,
+            file = file,
             signature = sig
         ))
     end
