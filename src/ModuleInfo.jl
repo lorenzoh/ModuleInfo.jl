@@ -3,6 +3,8 @@ module ModuleInfo
 using CodeTracking: pkgfiles, whereis
 using StructArrays: StructArray
 using InlineTest
+import Pkg
+import Memoize: @memoize
 
 
 const Maybe{T} = Union{Nothing, T}
@@ -26,7 +28,7 @@ export moduleinfo
 Create a new database to hold module information.
 """
 function createinfostore()
-    return Dict(
+    return Dict{Symbol, StructArray}(
         :packages => StructArray(
             package_id = String[],
             name = String[],
@@ -64,23 +66,44 @@ function createinfostore()
     )
 end
 
+function packageid(m::Module)
+    pkgid = Base.PkgId(m)
+    if isnothing(pkgid.uuid)
+        return pkgid.name
+    else
+        return string(pkgid.uuid)
+    end
+end
+
+
+function packagefiles(m::Module)
+    i = pkgfiles(m)
+    if !isnothing(i)
+        return i.basedir, i.files
+    end
+    dir = if m === Base
+        abspath(joinpath(Sys.BINDIR, "..", "share", "julia", "base"))
+    else
+        joinpath(Pkg.pkgdir(m), "src")
+    end
+    return dir, filter(endswith(".jl"), readdirrecursive(dir))
+end
 
 function moduleinfo!(db, m::Module)
-    info = pkgfiles(m)
-    pkgid = string(info.id.uuid)
-
-    # If `m` is a top-level module
+    # If the module is a package, add a package entry
     if parentmodulerec(m) == m
-        # Add package entry
+        pkgid = packageid(m)
+        dir, files = packagefiles(m)
+
         push!(db[:packages], (
             package_id = pkgid,
-            name = info.id.name,
-            basedir = info.basedir
+            name = Base.PkgId(m).name,
+            basedir = dir,
         ))
 
-    # Add source files of package
-        for file in info.files
-            if isfile(joinpath(pkgdir(m), file))
+        # Add source files of package
+        for file in files
+            if isfile(joinpath(dir, file))
                 push!(db[:sourcefiles], (package_id = pkgid, file = file))
             end
         end
@@ -91,7 +114,7 @@ function moduleinfo!(db, m::Module)
     push!(db[:modules], (
         module_id = modulename,
         parent = parentmodule(m) === m ? nothing : join(fullname(parentmodule(m)), "."),
-        package_id = pkgid,
+        package_id = packageid(m),
         instance = m,
     ))
 
@@ -175,7 +198,7 @@ end
 parentmodulerec(e::E) where {E<:Enum} = parentmodulerec(E)
 
 
-function submodules(m::Module)
+@memoize function submodules(m::Module)::Vector{Module}
     return map(s -> getfield(m, s), filter(names(m, all=true)) do s
         isdefined(m, s) || return false
         subm = getfield(m, s)
@@ -205,19 +228,32 @@ function gathermethods!(db, m::Module, symbol::Symbol)
 
     x = getfield(m, symbol)
     for (i, method) in enumerate(methods(x))
-        file, line = whereis(method)
-        sig = join(split(string(method), ")")[1:end-1]) * ")"
+
+        sig = _signature(method)
         push!(db[:methods], (
             method_id = "$(symbol_id)_$i",
             symbol_id = symbol_id,
-            file = file,
-            line = line,
+            file = string(method.file),
+            line = method.line,
             signature = sig
         ))
     end
     return db
 end
 
+# Base.string(method) is too slow
+_signature(method::Method) = sprint(_signature, method)
+function _signature(io, method::Method)
+    print(io, method.name, "(")
+    print(io, "...")
+    #= TODO: fix type printing
+    for (i, t) in enumerate(method.sig)
+        print(io, "::", T)
+        i != length(method.sig) && print(io, ", ")
+    end
+    =#
+    print(io, ") at ", method.file, ":", method.line, " in module ", method.module)
+end
 
 function symbolkind(m::Module, symbol::Symbol)
     x = getfield(m, symbol)
@@ -227,6 +263,16 @@ function symbolkind(m::Module, symbol::Symbol)
     x isa Module && return "module"
     isconst(m, symbol) && return "const"
     return "unknown"
+end
+
+function readdirrecursive(dir)
+    files = String[]
+    for (root, _, fs) in walkdir(dir)
+        for f in fs
+            push!(files, relpath(joinpath(root, f), dir))
+        end
+    end
+    return files
 end
 
 
