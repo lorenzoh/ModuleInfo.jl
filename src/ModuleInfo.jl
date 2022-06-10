@@ -3,6 +3,7 @@ module ModuleInfo
 using CodeTracking: pkgfiles, whereis
 using StructArrays: StructArray
 using InlineTest
+using Markdown
 
 
 const Maybe{T} = Union{Nothing, T}
@@ -148,9 +149,10 @@ getsymbolid(m, symbol) = join(fullname(m), ".") * "." * string(symbol)
 
 
 function gatherdocstring!(db, m, symbol)
-    docstrs = getdocstrings(m, symbol)
+    # TODO: store method metadata
+    docstrs, _ = getdocstrings(m, symbol)
     isempty(docstrs) && return
-    docstring = join([d.docstring for d in docstrs], "\n\n---\n\n")
+    docstring = join(docstrs, "\n\n---\n\n")
 
     instance = getfield(m, symbol)
     symbol_id = m === instance ? getmoduleid(m) : getsymbolid(m, symbol)
@@ -234,22 +236,14 @@ struct DocString
 end
 
 
-function getdocstrings(m::Module, symbol::Symbol)
-    multidoc = getmultidoc(m, symbol)
-    isnothing(multidoc) && return DocString[]
-    docstrs = collect(values(multidoc.docs))
-    #docstrings = [only(Base.Docs.catdoc(d.text...)) for d in docstrs]
-
-    docstrings = []
-    for d in docstrs
-        text = Base.Docs.catdoc(d.text...)
-        isnothing(text) && continue
-        push!(docstrings, text[1])
-    end
-    datas = [d.data for d in docstrs]
-    return [DocString(m, symbol, docstring, data)
-        for (docstring, data) in zip(docstrings, datas)]
+function getdocstrings(m, sym::Symbol)
+    multidoc = getmultidoc(m, sym)
+    isnothing(multidoc) && return String[], []
+    docstrings = [__plain_text(multidoc.docs[sig]) for sig in multidoc.order]
+    metadata = [multidoc.docs[sig].data for sig in multidoc.order]
+    return docstrings, metadata
 end
+
 
 function getmultidoc(m::Module, symbol::Symbol)
     binding = Base.Docs.Binding(m, symbol)
@@ -259,6 +253,18 @@ function getmultidoc(m::Module, symbol::Symbol)
     catch e
         e isa UndefVarError && return nothing
         rethrow()
+    end
+end
+
+function __plain_text(d::Base.Docs.DocStr)
+    if d.object isa Markdown.MD
+        return Markdown.plain(d.object)
+    else
+        buf = IOBuffer()
+        for part in d.text
+            print(buf, part)
+        end
+        return String(take!(buf))
     end
 end
 
