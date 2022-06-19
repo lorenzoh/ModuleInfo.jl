@@ -112,14 +112,11 @@ function gathermodulesymbols!(db, m::Module)
     childmodules = Module[]
 
     for subm in submodules(m)
-        moduleinfo!(db, subm)
+        isvalidmodule(subm) && moduleinfo!(db, subm)
     end
 
     for symbol in names(m, all=true)
-        if (!isdefined(m, symbol) || symbol === :eval ||
-                symbol == :include || !isfrommodule(m, symbol) || startswith(string(symbol), "#"))
-            continue
-        end
+        isvalidsymbol(m, symbol) || continue
 
         instance = getfield(m, symbol)
         kind = symbolkind(m, symbol)
@@ -139,11 +136,17 @@ function gathermodulesymbols!(db, m::Module)
         gatherdocstring!(db, m, symbol)
     end
 
-    for m in childmodules
-        moduleinfo!(db, m)
-    end
 end
 
+function isvalidsymbol(m, s)
+    isdefined(m, s) || return false
+    isfrommodule(m, s) || return false
+    s == :include && return false
+    s == :eval && return false
+    return !isnothing(match(r"^[a-zA-Z].*", string(s)))
+end
+
+isvalidmodule(m) = !isnothing(match(r"^[a-zA-Z].*", string(nameof(m))))
 
 getsymbolid(m, symbol) = join(fullname(m), ".") * "." * string(symbol)
 
