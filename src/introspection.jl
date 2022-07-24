@@ -46,7 +46,7 @@ end
 
 function isvalidsymbol(m, s)
     isdefined(m, s) || return false
-    isfrommodule(m, s) || return false
+    #isfrommodule(m, s) || return false
     s == :include && return false
     s == :eval && return false
     return !isnothing(match(r"^[a-zA-Z].*", string(s)))
@@ -125,7 +125,7 @@ function shortsrcpath(m::Module, file)
         if isnothing(i)
             return file
         else
-            return ".../" * joinpath(parts[i+1:end])
+            return joinpath(parts[i+1:end])
         end
     end
 
@@ -169,9 +169,10 @@ end
 function symbolkind(m::Module, symbol::Symbol)
     x = getfield(m, symbol)
     x isa DataType && return (isconcretetype(x) ? "struct" : "abstract type")
-    x isa UnionAll && return "struct"
     x isa Function && return "function"
+    x isa UnionAll && return (isstructtype(x) ? "struct" : "const")
     x isa Module && return "module"
     isconst(m, symbol) && return "const"
-    return "unknown"
+    #throw(ArgumentError("Could not detect what kind of symbol `$m.$symbol` is!"))
+    return "const"
 end

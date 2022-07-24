@@ -19,3 +19,11 @@ function filterfields(filters, obj)
     return true
 end
 filterfields(filters) = Base.Fix1(filterfields, filters)
+
+
+getpackage(I::PackageIndex, id::String) = I.data.packages[I.index.packages[id]]
+getpackage(I::PackageIndex, info::ModuleInfo_) = getpackage(I, info.package_id)
+getpackage(I::PackageIndex, info::AbstractInfo) = getpackage(I, getmodule(I, info))
+
+getmodule(I::PackageIndex, id) = I.data.modules[I.index.modules[id]]
+getmodule(I::PackageIndex, info::SymbolInfo) = getmodule(I, info.module_id)

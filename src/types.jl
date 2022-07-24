@@ -4,6 +4,7 @@ struct PackageInfo <: AbstractInfo
     uuid::String     # 3c3ff5e7-c68c-4a09-80d1-9526a1e9878a
     version::VersionNumber  # v"0.1"
     basedir::String  # /home/user/.julia/dev/ModuleInfo
+    dependencies::Vector{String}  # ["LinearAlgebra"]
 end
 
 getid(info::PackageInfo) = "$(info.name)@$(info.version)"
@@ -25,6 +26,7 @@ struct SymbolInfo <: AbstractInfo
     id::String
     name::String
     module_id::String
+    parent_module_id::Maybe{String}
     exported::Bool
     kind::Symbol
 end

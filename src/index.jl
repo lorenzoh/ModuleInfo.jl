@@ -39,7 +39,7 @@ function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 
     dir, files = packagefiles(m)
     pkgdir = joinpath(dir, "..")
     name = moduleid(m)
-    info = PackageInfo(name, id, packageversion(m), pkgdir)
+    info = PackageInfo(name, id, packageversion(m), pkgdir, string.(getdeps(m)))
 
     # TODO: fix overwrite
     if haskey(I.index.packages, getid(info)) || name in visited
@@ -82,30 +82,38 @@ function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = fal
             isvalidmodule(subm) && indexmodule!(I, pkgid, subm; overwrite, verbose)
         end
 
-        for symbol in names(m, all = true)
-            indexsymbol!(I, m, symbol; overwrite)
 
+        # TODO: store somewhere identifiers that are available, but not from this module
+        for symbol in names(m, all = true, imported = true)
+            indexsymbol!(I, m, symbol; overwrite)
         end
     end
 end
 
 
 function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = false)
-    isvalidsymbol(m, symbol) || return
+    isvalidsymbol(m, symbol) && isfrommodule(m, symbol) || return
 
     instance = getfield(m, symbol)
     kind = symbolkind(m, symbol)
     sid = symbolid(m, symbol)
 
+    parentm = kind == "const" ? m : parentmodule(instance)
     info = SymbolInfo(
         sid,
         string(symbol),
         moduleid(m),
+        parentm === m ? nothing : moduleid(parentm),
         Base.isexported(m, symbol),
         Symbol(kind),
     )
 
-    if addentry!(I, info; overwrite)
+    if addentry!(I, info; overwrite) #&& parentm === m
+        sid, m = if kind != "const" && parentm !== m && isdefined(parentm, symbol)
+            symbolid(parentm, symbol), parentm
+        else
+            sid, m
+        end
         for m in methods(instance)
             m.module === Core && continue
             # TOOD: what if single line defines multiple methods?
