@@ -1,9 +1,3 @@
-
-function indexenvironment(m)
-
-end
-
-
 function getdeps(m::Module)
     m === Base && return Symbol[]
     m === Core && return Symbol[]
@@ -16,9 +10,12 @@ function getdeps(m::Module)
 end
 
 # TODO: search child modules for import
-getdepmodules(m::Module) = [getfield(m, name)
-                            for name in getdeps(m)
-                            if isdefined(m, name) && getfield(m, name) isa Module]
+function getdepmodules(m::Module)
+    [getfield(m, name)
+     for name in getdeps(m)
+     if isdefined(m, name) && getfield(m, name) isa Module]
+end
 
-
-pkglastmodified(dir) = maximum(Iterators.map(f -> stat(f).mtime, glob("$(relpath(dir))/**/*.jl")))
+function pkglastmodified(dir)
+    maximum(Iterators.map(f -> stat(f).mtime, glob("$(relpath(dir))/**/*.jl")))
+end

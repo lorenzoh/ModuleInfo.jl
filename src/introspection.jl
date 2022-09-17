@@ -1,5 +1,4 @@
 
-
 """
     basemodule(m)
 
@@ -10,22 +9,20 @@ function basemodule(m)
     parentmodule(m) === m ? m : basemodule(parentmodule(m))
 end
 
-
 moduleid(m::Module) = join(fullname(m), ".")
 parentmoduleid(m::Module) = isnothing(parentmodule(m)) ? nothing : moduleid(parentmodule(m))
 
 symbolid(m, s) = getfield(m, s) === m ? moduleid(m) : "$(moduleid(m)).$s"
 
-
 isvalidmodule(m) = !isnothing(match(r"^[a-zA-Z].*", string(nameof(m))))
 
-
 function submodules(m::Module)
-    return map(s -> getfield(m, s), filter(names(m, all=true)) do s
-        isdefined(m, s) || return false
-        subm = getfield(m, s)
-        return subm isa Module && subm !== m && parentmodule(subm) === m
-    end)
+    return map(s -> getfield(m, s),
+               filter(names(m, all = true)) do s
+                   isdefined(m, s) || return false
+                   subm = getfield(m, s)
+                   return subm isa Module && subm !== m && parentmodule(subm) === m
+               end)
 end
 
 @memoize isfrommodule(m::Module, symbol) = isfrommodule(m, symbol, submodules(m))
@@ -52,7 +49,6 @@ function isvalidsymbol(m, s)
     return !isnothing(match(r"^[a-zA-Z].*", string(s)))
 end
 
-
 function packageid(m::Module)
     pkgid = Base.PkgId(m)
     if isnothing(pkgid.uuid)
@@ -77,7 +73,6 @@ function pkgsrcdir(m::Module)
             joinpath(Pkg.pkgdir(m), "src")
         end
     end
-
 end
 
 function packagefiles(m::Module)
@@ -85,21 +80,24 @@ function packagefiles(m::Module)
     return dir, filter(endswith(".jl"), readdirrecursive(dir))
 end
 
-
 function loadprojectfile(pkgdir)
     TOML.parsefile(joinpath(pkgdir, "Project.toml"))
 end
 
-
-function packageversion(m::Module)
-    if m === Base || isstdlib(m)
-        return VERSION
+function packageversion(m::Module, label = nothing)
+    v = if m === Base || isstdlib(m)
+        VERSION
     else
         if isfile(joinpath(Pkg.pkgdir(m), "Project.toml"))
-            return VersionNumber(loadprojectfile(Pkg.pkgdir(m))["version"])
+            VersionNumber(loadprojectfile(Pkg.pkgdir(m))["version"])
         else
-            return v"0.0.0-unknown"
+            v"0.0.0-unknown"
         end
+    end
+    if isnothing(label)
+        v
+    else
+        VersionNumber(v.major, v.minor, v.patch, (label,), v.build)
     end
 end
 
@@ -125,10 +123,9 @@ function shortsrcpath(m::Module, file)
         if isnothing(i)
             return file
         else
-            return joinpath(parts[i+1:end])
+            return joinpath(parts[(i + 1):end])
         end
     end
-
 end
 
 # ## Docstrings
@@ -140,7 +137,6 @@ function getdocstrings(m, sym::Symbol)
     metadata = [multidoc.docs[sig].data for sig in multidoc.order]
     return docstrings, metadata
 end
-
 
 function getmultidoc(m::Module, symbol::Symbol)
     binding = Base.Docs.Binding(m, symbol)
@@ -165,7 +161,6 @@ function __plain_text(d::Base.Docs.DocStr)
     end
 end
 
-
 function symbolkind(m::Module, symbol::Symbol)
     x = getfield(m, symbol)
     x isa DataType && return (isconcretetype(x) ? "struct" : "abstract type")
@@ -176,3 +171,50 @@ function symbolkind(m::Module, symbol::Symbol)
     #throw(ArgumentError("Could not detect what kind of symbol `$m.$symbol` is!"))
     return "const"
 end
+
+function bindings(m::Module)
+    binds = Tuple{Module, Symbol}[]
+    symbols = Set{Symbol}()
+    modules = Set{Module}()
+    for s in names(m, all = true, imported = true)
+        startswith(string(s), "#") && continue
+        if !(isdefined(m, s))
+            continue
+        end
+        val = getproperty(m, s)
+        if val isa Module
+            # A submodule which we traverse to get all exported symbols
+            # that may be imported into `m`'s namespace.
+            # We do this AFTER adding the module's own bindings so that these
+            # are correctly shadowed.
+            val !== m && push!(modules, m)
+            val !== m && push!(binds, (_parentmodule(m, val), s))
+        else
+            push!(binds, (_parentmodule(m, val), s))
+            push!(symbols, s)
+        end
+    end
+
+    for mdep in getdepmodules(m)
+        push!(binds, (mdep, nameof(mdep)))
+        push!(modules, mdep)
+    end
+
+    foreach(modules) do subm
+        subm === m && return
+        for name in names(subm)
+            name in symbols && continue
+            if isdefined(m, name)
+                push!(binds, (subm, name))
+            end
+            push!(symbols, name)
+        end
+    end
+
+    return binds
+end
+
+_parentmodule(_::Module, f::Function) = parentmodule(f)
+_parentmodule(_::Module, f::DataType) = parentmodule(f)
+_parentmodule(::Module, m::Module) = parentmodule(m)
+_parentmodule(m::Module, _) = m

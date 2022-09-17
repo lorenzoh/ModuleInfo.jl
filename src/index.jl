@@ -1,7 +1,4 @@
 
-
-
-
 """
 
     addentry!(I, info; overwrite) -> Bool
@@ -31,15 +28,18 @@ end
 
 exists(I, info) = haskey(I.index[getkey(info)], getid(info))
 
-
 function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 0,
-                       verbose = false, cache = NoCache(), packages = nothing, visited = Set{String}())
+                       verbose = false, cache = NoCache(), packages = nothing,
+                       visited = Set{String}(), pkgtags = Dict{String, String}())
     m = basemodule(m)
     id = packageid(m)
     dir, files = packagefiles(m)
     pkgdir = joinpath(dir, "..")
     name = moduleid(m)
-    info = PackageInfo(name, id, packageversion(m), pkgdir, string.(getdeps(m)))
+    depms = getdepmodules(m)
+    dependencies = map(m_ -> "$m_@$(get(pkgtags, string(m_), packageversion(m_)))", depms)
+    info = PackageInfo(name, id, get(pkgtags, name, string(packageversion(m))), pkgdir,
+                       dependencies)
 
     # TODO: fix overwrite
     if haskey(I.index.packages, getid(info)) || name in visited
@@ -66,14 +66,14 @@ function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 
 
     # Descend into loaded submodules where available
     if recurse > 0
-        foreach(sort(getdepmodules(m), by=fullname)) do m_
-            indexpackage!(I, m_; overwrite = false, recurse = recurse - 1, verbose, cache, packages, visited)
+        foreach(sort(getdepmodules(m), by = fullname)) do m_
+            indexpackage!(I, m_; overwrite = false, recurse = recurse - 1, verbose, cache,
+                          packages, visited)
         end
     end
 
     return I
 end
-
 
 function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = false,
                       verbose = false)
@@ -82,14 +82,27 @@ function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = fal
             isvalidmodule(subm) && indexmodule!(I, pkgid, subm; overwrite, verbose)
         end
 
-
         # TODO: store somewhere identifiers that are available, but not from this module
         for symbol in names(m, all = true, imported = true)
             indexsymbol!(I, m, symbol; overwrite)
+
+            # If the symbol is exported automatically, it will not show up in `names`
+            # so we need to add bindings to all modules that use this module.
+            # This means packages that depend on it
+        end
+
+        for (parentm, symbol) in bindings(m)
+            symbol_id = string(parentm) == string(symbol) ? string(symbol) :
+                        "$parentm.$symbol"
+            addentry!(I,
+                      BindingInfo(symbolid(m, symbol),
+                                  string(symbol),
+                                  moduleid(m),
+                                  symbol_id,
+                                  Base.isexported(m, symbol)); overwrite)
         end
     end
 end
-
 
 function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = false)
     isvalidsymbol(m, symbol) && isfrommodule(m, symbol) || return
@@ -99,14 +112,11 @@ function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = fa
     sid = symbolid(m, symbol)
 
     parentm = kind == "const" ? m : parentmodule(instance)
-    info = SymbolInfo(
-        sid,
-        string(symbol),
-        moduleid(m),
-        parentm === m ? nothing : moduleid(parentm),
-        Base.isexported(m, symbol),
-        Symbol(kind),
-    )
+    info = SymbolInfo(sid,
+                      string(symbol),
+                      moduleid(m),
+                      parentm === m ? nothing : moduleid(parentm),
+                      Symbol(kind))
 
     if addentry!(I, info; overwrite) #&& parentm === m
         sid, m = if kind != "const" && parentm !== m && isdefined(parentm, symbol)
@@ -124,7 +134,9 @@ function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = fa
         docstrs, metas = getdocstrings(m, symbol)
         for (docstr, meta) in zip(docstrs, metas)
             file = shortsrcpath(meta[:module], meta[:path])
-            addentry!(I, DocstringInfo(sid, moduleid(meta[:module]), docstr, file, meta[:linenumber]))
+            addentry!(I,
+                      DocstringInfo(sid, moduleid(meta[:module]), docstr, file,
+                                    meta[:linenumber]))
         end
     end
 end

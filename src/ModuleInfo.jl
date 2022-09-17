@@ -13,7 +13,6 @@ import StructTypes
 import TOML
 import Glob: glob
 
-
 const Maybe{T} = Union{Nothing, T}
 
 include("types.jl")
@@ -26,20 +25,19 @@ include("cache.jl")
 
 export PackageIndex
 
-
 module A
-    h(z) = 4
+h(z) = 4
 
-    module B
-        f(x::Float16) = 1
-        g(y) = 3
-        export f
-    end
+module B
+f(x::Float16) = 1
+g(y) = 3
+export f
+end
 
-    B.f(a::Int) = 2
-    using .B
+B.f(a::Int) = 2
+using .B
 
-    export f, B
+export f, B
 end
 using .A
 
@@ -52,12 +50,10 @@ using .A
     @test !isfrommodule(B, :h)
 end
 
-
 const CACHE = Ref{InfoCache}(NoCache())
 
 function __init__()
     CACHE[] = FileCache(Scratch.@get_scratch!("cache"))
 end
-
 
 end  # module

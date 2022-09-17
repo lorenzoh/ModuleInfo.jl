@@ -1,5 +1,4 @@
 
-
 #=
 
 - Dump index to cache
@@ -27,14 +26,14 @@ function readfromcache end
 
 struct NoCache <: InfoCache end
 
-
-
 iscached(::NoCache, _) = false
-readfromcache(::NoCache, _) = throw(ValueError("`NoCache` cannot cache, this function should not be called."))
+function readfromcache(::NoCache, _)
+    throw(ValueError("`NoCache` cannot cache, this function should not be called."))
+end
 writecache(::NoCache, _) = return
 
 struct FileCache <: InfoCache
-    dir
+    dir::Any
 end
 
 function iscached(cache::FileCache, info::PackageInfo)
@@ -57,12 +56,10 @@ function readfromcache(cache::FileCache, info::PackageInfo)
     readcache(path)
 end
 
-
-
 function writecache(cache::FileCache, I::PackageIndex)
     !isdir(cache.dir) && mkpath(cache.dir)
     for pkg in I.packages
-        pdir = joinpath(cache.dir, pkg.name, string(pkg.version))
+        pdir = joinpath(cache.dir, pkg.name, pkg.version)
         writecache(pdir, I, getid(pkg))
     end
 end
@@ -75,18 +72,16 @@ function writecache(dir, I::PackageIndex, pkgid::String)
     end
 end
 
-
-const INFOS = (
-    packages = PackageInfo,
-    modules = ModuleInfo_,
-    symbols = SymbolInfo,
-    docstrings = DocstringInfo,
-    files = FileInfo,
-    methods = MethodInfo,
-)
+const INFOS = (packages = PackageInfo,
+               modules = ModuleInfo_,
+               symbols = SymbolInfo,
+               bindings = BindingInfo,
+               docstrings = DocstringInfo,
+               files = FileInfo,
+               methods = MethodInfo)
 
 function readcache(dir)
-    data = NamedTuple(k => readtable(joinpath(dir, "$k.json"), T)  for (k, T) in pairs(INFOS))
+    NamedTuple(k => readtable(joinpath(dir, "$k.json"), T) for (k, T) in pairs(INFOS))
 end
 
 # TODO: allow loading an environment
@@ -109,7 +104,9 @@ function packageview(I::PackageIndex, pkgids)
     symbols = @view I.symbols[map(in(module_ids), I.symbols.module_id)]
     methods = @view I.methods[map(in(module_ids), I.methods.module_id)]
     docstrings = @view I.docstrings[map(in(module_ids), I.docstrings.module_id)]
-    return PackageIndex((; packages, files, modules, symbols, methods, docstrings))
+    bindings = @view I.bindings[map(in(module_ids), I.bindings.module_id)]
+    return PackageIndex((; packages, files, modules, symbols, methods, docstrings,
+                         bindings))
 end
 
 # TODo: views, write to folders, load it again. reload packages that are

@@ -1,13 +1,11 @@
 
-
-
 struct PackageIndex{TData, TIndex}
     data::TData
     index::TIndex
 end
 
 PackageIndex() = PackageIndex(newdata(), newindex())
-function PackageIndex(ms::Vector{Module}; cache = false, kwargs...)
+function PackageIndex(ms::Vector{Module}; cache = true, kwargs...)
     cache = cache isa Bool ? (cache ? CACHE[] : NoCache()) : cache
     I = PackageIndex()
     visited = Set{String}()
@@ -21,9 +19,9 @@ function Base.show(io::IO, I::PackageIndex)
     print(io, "PackageIndex(")
     for (i, (k, entries)) in enumerate(pairs(I.data))
         n = length(entries)
-        printstyled(io, n, bold=true)
+        printstyled(io, n, bold = true)
         print(io, " ")
-        name = n == 1 ? string(k)[1:end-1] : k
+        name = n == 1 ? string(k)[1:(end - 1)] : k
         print(io, "\e[2m", name, "\e[22m")
         i < length(I.data) && print(io, ", ")
     end
@@ -53,30 +51,27 @@ function index!(I::PackageIndex, m)
     return I
 end
 
-
 function newdata()
-    return (
-        packages = StructArray(PackageInfo[]),
-        modules = StructArray(ModuleInfo_[]),
-        files = StructArray(FileInfo[]),
-        symbols = StructArray(SymbolInfo[]),
-        methods = StructArray(MethodInfo[]),
-        docstrings = StructArray(DocstringInfo[]),
-    )
+    return (packages = StructArray(PackageInfo[]),
+            modules = StructArray(ModuleInfo_[]),
+            files = StructArray(FileInfo[]),
+            symbols = StructArray(SymbolInfo[]),
+            methods = StructArray(MethodInfo[]),
+            docstrings = StructArray(DocstringInfo[]),
+            bindings = StructArray(BindingInfo[]))
 end
 
 function newindex()
-    return (
-        packages = Dict{String, Int}(),
-        modules = Dict{String, Int}(),
-        files = Dict{String, Int}(),
-        symbols = Dict{String, Int}(),
-        methods = Dict{String, Int}(),
-        docstrings = Dict{String, Int}(),
-    )
+    return (packages = Dict{String, Int}(),
+            modules = Dict{String, Int}(),
+            files = Dict{String, Int}(),
+            symbols = Dict{String, Int}(),
+            methods = Dict{String, Int}(),
+            docstrings = Dict{String, Int}(),
+            bindings = Dict{String, Int}())
 end
 
-
 function __createindex(data)
-    NamedTuple(k => Dict(getid(x) => i for (i, x) in enumerate(xs)) for (k, xs) in pairs(data))
+    NamedTuple(k => Dict(getid(x) => i for (i, x) in enumerate(xs))
+               for (k, xs) in pairs(data))
 end
