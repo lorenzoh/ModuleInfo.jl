@@ -116,7 +116,8 @@ function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = fa
                       string(symbol),
                       moduleid(m),
                       parentm === m ? nothing : moduleid(parentm),
-                      Symbol(kind))
+                      Symbol(kind),
+                      Base.isexported(parentm, symbol))
 
     if addentry!(I, info; overwrite) #&& parentm === m
         sid, m = if kind != "const" && parentm !== m && isdefined(parentm, symbol)

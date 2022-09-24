@@ -1,7 +1,7 @@
 
 getpackages(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.packages)
 getmodules(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.modules)
-getfiles(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.modules)
+getfiles(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.files)
 getsymbols(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.symbols)
 getmethods(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.methods)
 getdocstrings(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.docstrings)

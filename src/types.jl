@@ -28,6 +28,8 @@ struct SymbolInfo <: AbstractInfo
     module_id::String
     parent_module_id::Maybe{String}
     kind::Symbol
+    # Whether the module that defines the symbol exports it
+    exported::Bool
 end
 
 struct DocstringInfo <: AbstractInfo
