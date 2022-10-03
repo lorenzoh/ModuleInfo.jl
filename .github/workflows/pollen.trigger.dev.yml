@@ -9,6 +9,6 @@ jobs:
     name: "Pollen - Build documentation on push to main"
     runs-on: ubuntu-latest
     steps:
-      - uses: "lorenzoh/Pollen.jl/.github/workflows/pollen.yml"
+      - uses: "lorenzoh/Pollen.jl@lo-develop/.github/workflows/pollen.yml"
         with:
           tag: dev
