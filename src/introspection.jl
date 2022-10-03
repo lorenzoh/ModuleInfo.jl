@@ -6,6 +6,7 @@ Recursive version of `parentmodule`, returning the top-most module.
 """
 function basemodule(m)
     m === Base && return Base
+    m === Core && return Core
     parentmodule(m) === m ? m : basemodule(parentmodule(m))
 end
 

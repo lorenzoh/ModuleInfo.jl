@@ -1,6 +1,6 @@
 function getdeps(m::Module)
-    m === Base && return Symbol[]
-    m === Core && return Symbol[]
+    basemodule(m) === Base && return Symbol[]
+    basemodule(m) === Core && return Symbol[]
     file = joinpath(Pkg.pkgdir(m), "Project.toml")
     isfile(file) || return Symbol[]
     # TODO: add support for pre-1.0 REQUIRE files
