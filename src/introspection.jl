@@ -124,7 +124,7 @@ function shortsrcpath(m::Module, file)
         if isnothing(i)
             return file
         else
-            return joinpath(parts[(i + 1):end])
+            return joinpath(parts[(i + 1):end]...)
         end
     end
 end
