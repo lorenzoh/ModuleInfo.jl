@@ -8,7 +8,8 @@ jobs:
   pollen:
     name: "Pollen - Build documentation on push to main"
     runs-on: ubuntu-latest
-    steps:
-      - uses: "lorenzoh/Pollen.jl/.github/workflows/pollen.yml@lo-develop"
-        with:
-          tag: dev
+    uses: "lorenzoh/Pollen.jl/.github/workflows/pollen.yml@lo-develop"
+      with:
+        tag: dev
+      secrets:
+        GITHUB_TOKEN: {{secrets.GITHUB_TOKEN}}
