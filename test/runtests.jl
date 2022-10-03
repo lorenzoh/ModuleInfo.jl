@@ -1,5 +1,4 @@
 using ModuleInfo
-using Test
 using ReTest
 
 ModuleInfo.runtests()
