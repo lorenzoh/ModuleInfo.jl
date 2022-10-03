@@ -8,17 +8,17 @@ on:
         type: string
       docdir:
         description: "Path of the subdirectory where Pollen's Project.toml, make.jl, and project.jl are stored."
-        required: true
+        required: false
         default: "docs/"
         type: string
       databranch:
         description: "Branch where the generated documentation is stored"
-        required: true
+        required: false
         default: "pollen"
         type: string
       juliaversion:
         description: "Julia version to use when building the documentation"
-        required: true
+        required: false
         default: "1.8"
         type: string
 
