@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.pkgID_color","module_id":"Pkg.Resolve","file":"Resolve/graphtype.jl","line":565,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"pkgID_color","symbol_id":"Pkg.Resolve.pkgID_color","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

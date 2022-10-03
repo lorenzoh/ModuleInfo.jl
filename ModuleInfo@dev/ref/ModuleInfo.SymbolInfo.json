@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.SymbolInfo","module_id":"ModuleInfo","file":"types.jl","line":26,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"SymbolInfo","symbol_id":"ModuleInfo.SymbolInfo","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

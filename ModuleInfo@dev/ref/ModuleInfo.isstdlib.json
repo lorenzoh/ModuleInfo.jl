@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.isstdlib","module_id":"ModuleInfo","file":"introspection.jl","line":105,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"isstdlib","symbol_id":"ModuleInfo.isstdlib","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

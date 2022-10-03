@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.find_project_file","module_id":"Pkg.Types","file":"Types.jl","line":195,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"find_project_file","symbol_id":"Pkg.Types.find_project_file","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

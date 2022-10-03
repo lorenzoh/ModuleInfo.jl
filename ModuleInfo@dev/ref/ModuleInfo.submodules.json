@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.submodules","module_id":"ModuleInfo","file":"introspection.jl","line":20,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"submodules","symbol_id":"ModuleInfo.submodules","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

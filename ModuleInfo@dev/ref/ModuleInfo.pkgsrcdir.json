@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.pkgsrcdir","module_id":"ModuleInfo","file":"introspection.jl","line":62,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"pkgsrcdir","symbol_id":"ModuleInfo.pkgsrcdir","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

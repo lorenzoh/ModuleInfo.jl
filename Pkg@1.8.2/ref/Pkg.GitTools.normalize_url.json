@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.GitTools.normalize_url","module_id":"Pkg.GitTools","file":"GitTools.jl","line":49,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"normalize_url","symbol_id":"Pkg.GitTools.normalize_url","exported":false,"module_id":"Pkg.GitTools"},"tag":"documentation","children":[],"type":"node"}

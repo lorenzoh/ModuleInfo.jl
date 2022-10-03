@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.autolink","module_id":"Markdown","file":"Common/inline.jl","line":122,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"autolink","symbol_id":"Markdown.autolink","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

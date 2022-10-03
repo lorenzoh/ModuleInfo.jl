@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.get_bool_env","module_id":"Pkg","file":"utils.jl","line":94,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"get_bool_env","symbol_id":"Pkg.get_bool_env","exported":false,"module_id":"Pkg"},"tag":"documentation","children":[],"type":"node"}

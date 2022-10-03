@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"InlineTest.register","module_id":"InlineTest","file":"InlineTest.jl","line":37,"signature":"(::Signature)"}],"package_id":"InlineTest@0.2.0","title":"register","symbol_id":"InlineTest.register","exported":false,"module_id":"InlineTest"},"tag":"documentation","children":[],"type":"node"}

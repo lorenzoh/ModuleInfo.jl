@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.precomp_dequeue!","module_id":"Pkg.API","file":"API.jl","line":1486,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"precomp_dequeue!","symbol_id":"Pkg.API.precomp_dequeue!","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

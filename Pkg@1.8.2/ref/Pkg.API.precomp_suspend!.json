@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.precomp_suspend!","module_id":"Pkg.API","file":"API.jl","line":1470,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"precomp_suspend!","symbol_id":"Pkg.API.precomp_suspend!","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

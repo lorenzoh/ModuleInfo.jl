@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.error_if_in_sysimage","module_id":"Pkg.Types","file":"Types.jl","line":522,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"error_if_in_sysimage","symbol_id":"Pkg.Types.error_if_in_sysimage","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

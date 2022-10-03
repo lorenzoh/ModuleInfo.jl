@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.getentry","module_id":"ModuleInfo","file":"find.jl","line":44,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"getentry","symbol_id":"ModuleInfo.getentry","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

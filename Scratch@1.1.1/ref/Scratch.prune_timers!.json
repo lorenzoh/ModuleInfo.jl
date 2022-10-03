@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Scratch.prune_timers!","module_id":"Scratch","file":"Scratch.jl","line":188,"signature":"(::Signature)"}],"package_id":"Scratch@1.1.1","title":"prune_timers!","symbol_id":"Scratch.prune_timers!","exported":false,"module_id":"Scratch"},"tag":"documentation","children":[],"type":"node"}

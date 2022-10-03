@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.pkg_server","module_id":"Pkg","file":"Pkg.jl","line":24,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"pkg_server","symbol_id":"Pkg.pkg_server","exported":false,"module_id":"Pkg"},"tag":"documentation","children":[],"type":"node"}

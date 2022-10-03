@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.escapes","module_id":"Markdown","file":"Common/inline.jl","line":178,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"escapes","symbol_id":"Markdown.escapes","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

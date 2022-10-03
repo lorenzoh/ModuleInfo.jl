@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.indexmodule!","module_id":"ModuleInfo","file":"index.jl","line":79,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"indexmodule!","symbol_id":"ModuleInfo.indexmodule!","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.converge!","module_id":"Pkg.Resolve","file":"Resolve/maxsum.jl","line":368,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"converge!","symbol_id":"Pkg.Resolve.converge!","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

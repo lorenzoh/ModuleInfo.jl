@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.registered_uuid","module_id":"Pkg.Types","file":"Types.jl","line":984,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"registered_uuid","symbol_id":"Pkg.Types.registered_uuid","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

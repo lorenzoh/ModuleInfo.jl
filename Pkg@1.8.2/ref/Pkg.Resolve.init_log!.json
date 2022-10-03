@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.init_log!","module_id":"Pkg.Resolve","file":"Resolve/graphtype.jl","line":611,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"init_log!","symbol_id":"Pkg.Resolve.init_log!","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

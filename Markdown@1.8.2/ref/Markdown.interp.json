@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.interp","module_id":"Markdown","file":"Julia/interp.jl","line":25,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"interp","symbol_id":"Markdown.interp","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

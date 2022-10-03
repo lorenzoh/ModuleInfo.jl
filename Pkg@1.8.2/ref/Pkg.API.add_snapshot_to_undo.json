@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.add_snapshot_to_undo","module_id":"Pkg.API","file":"API.jl","line":1852,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"add_snapshot_to_undo","symbol_id":"Pkg.API.add_snapshot_to_undo","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

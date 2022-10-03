@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"ModuleInfo.FileCache","module_id":"ModuleInfo","file":"cache.jl","line":36,"signature":"(::Signature)"}],"package_id":"ModuleInfo@dev","title":"FileCache","symbol_id":"ModuleInfo.FileCache","exported":false,"module_id":"ModuleInfo"},"tag":"documentation","children":[],"type":"node"}

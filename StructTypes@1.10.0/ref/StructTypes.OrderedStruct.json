@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"StructTypes.OrderedStruct","module_id":"StructTypes","file":"StructTypes.jl","line":113,"signature":"(::Signature)"}],"package_id":"StructTypes@1.10.0","title":"OrderedStruct","symbol_id":"StructTypes.OrderedStruct","exported":false,"module_id":"StructTypes"},"tag":"documentation","children":[],"type":"node"}

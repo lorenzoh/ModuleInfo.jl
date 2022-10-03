@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.decimate!","module_id":"Pkg.Resolve","file":"Resolve/maxsum.jl","line":284,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"decimate!","symbol_id":"Pkg.Resolve.decimate!","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}
