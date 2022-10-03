@@ -16,4 +16,11 @@ StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
+Glob = "1"
+InlineTest = "0.2"
+JSON3 = "1"
+Memoize = "0.4"
+Scratch = "1"
+StructArrays = "0.6"
+StructTypes = "1"
 julia = "1"
