@@ -1,34 +1,34 @@
 
 """
 
-    addentry!(I, info; overwrite) -> Bool
+    addentry!(pkgindex, info; overwrite) -> Bool
 
 Return whether an entry was added/modified. If `overwrite = true`,
 modifies existing entries, returning `true`.
 
 ```julia
-addentry!(I, PackageInfo(...))
+addentry!(pkgindex, PackageInfo(...))
 ```
 """
-function addentry!(I::PackageIndex, info; overwrite = false)
+function addentry!(pkgindex::PackageIndex, info; overwrite = false)
     k, id = getkey(info), getid(info)
-    if exists(I, info)
+    if exists(pkgindex, info)
         if overwrite
-            I.data[k][I.index[k][id]] = info
+            pkgindex.data[k][pkgindex.index[k][id]] = info
             return true
         else
             return false
         end
     else
-        push!(I.data[k], info)
-        I.index[k][id] = length(I.data[k])
+        push!(pkgindex.data[k], info)
+        pkgindex.index[k][id] = length(pkgindex.data[k])
     end
     return true
 end
 
-exists(I, info) = haskey(I.index[getkey(info)], getid(info))
+exists(pkgindex, info) = haskey(pkgindex.index[getkey(info)], getid(info))
 
-function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 0,
+function indexpackage!(pkgindex::PackageIndex, m::Module; overwrite = false, recurse = 0,
                        verbose = false, cache = NoCache(), packages = nothing,
                        visited = Set{String}(), pkgtags = Dict{String, String}())
     m = basemodule(m)
@@ -42,23 +42,23 @@ function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 
                        dependencies)
 
     # TODO: fix overwrite
-    if haskey(I.index.packages, getid(info)) || name in visited
+    if haskey(pkgindex.index.packages, getid(info)) || name in visited
         return
     end
 
     if (isnothing(packages) || (name in packages))
         if iscached(cache, info)
             data = readfromcache(cache, info)
-            I = extend!(I, data)
+            pkgindex = extend!(pkgindex, data)
         else
-            addentry!(I, info; overwrite)
+            addentry!(pkgindex, info; overwrite)
             verbose && print("\e[2mIndexing\e[22m \e[3m$m\e[23m\e[2m...\e[22m")
             for file in files
                 if isfile(joinpath(dir, file))
-                    addentry!(I, FileInfo(getid(info), file); overwrite)
+                    addentry!(pkgindex, FileInfo(getid(info), file); overwrite)
                 end
             end
-            indexmodule!(I, getid(info), m; overwrite, verbose)
+            indexmodule!(pkgindex, getid(info), m; overwrite, verbose)
             verbose && print("\e[2K\r")
         end
     end
@@ -67,24 +67,25 @@ function indexpackage!(I::PackageIndex, m::Module; overwrite = false, recurse = 
     # Descend into loaded submodules where available
     if recurse > 0
         foreach(sort(getdepmodules(m), by = fullname)) do m_
-            indexpackage!(I, m_; overwrite = false, recurse = recurse - 1, verbose, cache,
+            indexpackage!(pkgindex, m_; overwrite = false, recurse = recurse - 1, verbose,
+                          cache,
                           packages, visited)
         end
     end
 
-    return I
+    return pkgindex
 end
 
-function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = false,
+function indexmodule!(pkgindex::PackageIndex, pkgid::String, m::Module; overwrite = false,
                       verbose = false)
-    if addentry!(I, ModuleInfo_(moduleid(m), parentmoduleid(m), pkgid); overwrite)
+    if addentry!(pkgindex, ModuleInfo_(moduleid(m), parentmoduleid(m), pkgid); overwrite)
         for subm in submodules(m)
-            isvalidmodule(subm) && indexmodule!(I, pkgid, subm; overwrite, verbose)
+            isvalidmodule(subm) && indexmodule!(pkgindex, pkgid, subm; overwrite, verbose)
         end
 
         # TODO: store somewhere identifiers that are available, but not from this module
         for symbol in names(m, all = true, imported = true)
-            indexsymbol!(I, m, symbol; overwrite)
+            indexsymbol!(pkgindex, m, symbol; overwrite)
 
             # If the symbol is exported automatically, it will not show up in `names`
             # so we need to add bindings to all modules that use this module.
@@ -94,7 +95,7 @@ function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = fal
         for (parentm, symbol) in bindings(m)
             symbol_id = string(parentm) == string(symbol) ? string(symbol) :
                         "$parentm.$symbol"
-            addentry!(I,
+            addentry!(pkgindex,
                       BindingInfo(symbolid(m, symbol),
                                   string(symbol),
                                   moduleid(m),
@@ -104,7 +105,7 @@ function indexmodule!(I::PackageIndex, pkgid::String, m::Module; overwrite = fal
     end
 end
 
-function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = false)
+function indexsymbol!(pkgindex::PackageIndex, m::Module, symbol::Symbol; overwrite = false)
     isvalidsymbol(m, symbol) && isfrommodule(m, symbol) || return
 
     instance = getfield(m, symbol)
@@ -119,7 +120,7 @@ function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = fa
                       Symbol(kind),
                       Base.isexported(parentm, symbol))
 
-    if addentry!(I, info; overwrite) #&& parentm === m
+    if addentry!(pkgindex, info; overwrite) #&& parentm === m
         sid, m = if kind != "const" && parentm !== m && isdefined(parentm, symbol)
             symbolid(parentm, symbol), parentm
         else
@@ -129,13 +130,14 @@ function indexsymbol!(I::PackageIndex, m::Module, symbol::Symbol; overwrite = fa
             m.module === Core && continue
             # TOOD: what if single line defines multiple methods?
             file = shortsrcpath(m.module, string(m.file))
-            addentry!(I, MethodInfo(sid, moduleid(m.module), file, m.line, "(::Signature)"))
+            addentry!(pkgindex,
+                      MethodInfo(sid, moduleid(m.module), file, m.line, "(::Signature)"))
         end
 
         docstrs, metas = getdocstrings(m, symbol)
         for (docstr, meta) in zip(docstrs, metas)
             file = shortsrcpath(meta[:module], meta[:path])
-            addentry!(I,
+            addentry!(pkgindex,
                       DocstringInfo(sid, moduleid(meta[:module]), docstr, file,
                                     meta[:linenumber]))
         end

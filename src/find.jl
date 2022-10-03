@@ -1,10 +1,14 @@
 
-getpackages(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.packages)
-getmodules(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.modules)
-getfiles(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.files)
-getsymbols(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.symbols)
-getmethods(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.methods)
-getdocstrings(I::PackageIndex; kwargs...) = filterview(filterfields(kwargs), I.docstrings)
+getpackages(pkgindex; kwargs...) = getentries(pkgindex, :packages; kwargs...)
+getmodules(pkgindex; kwargs...) = getentries(pkgindex, :modules; kwargs...)
+getfiles(pkgindex; kwargs...) = getentries(pkgindex, :files; kwargs...)
+getsymbols(pkgindex; kwargs...) = getentries(pkgindex, :symbols; kwargs...)
+getdocstrings(pkgindex; kwargs...) = getentries(pkgindex, :docstrings; kwargs...)
+getmethods(pkgindex; kwargs...) = getentries(pkgindex, :methods; kwargs...)
+
+function getentries(pkgindex::PackageIndex, store::Symbol; kwargs...)
+    filterview(filterfields(kwargs), getproperty(pkgindex, store))
+end
 
 function filterview(f, xs)
     I = map(f, xs)
@@ -19,26 +23,34 @@ function filterfields(filters, obj)
 end
 filterfields(filters) = Base.Fix1(filterfields, filters)
 
-getpackage(I::PackageIndex, id::String) = I.data.packages[I.index.packages[id]]
-getpackage(I::PackageIndex, info::ModuleInfo_) = getpackage(I, info.package_id)
-getpackage(I::PackageIndex, info::AbstractInfo) = getpackage(I, getmodule(I, info))
+function getpackage(pkgindex::PackageIndex, id::String)
+    pkgindex.data.packages[pkgindex.index.packages[id]]
+end
+function getpackage(pkgindex::PackageIndex, info::ModuleInfo_)
+    getpackage(pkgindex, info.package_id)
+end
+function getpackage(pkgindex::PackageIndex, info::AbstractInfo)
+    getpackage(pkgindex, getmodule(pkgindex, info))
+end
 
-getmodule(I::PackageIndex, id) = I.data.modules[I.index.modules[id]]
-getmodule(I::PackageIndex, info::SymbolInfo) = getmodule(I, info.module_id)
-getsymbol(I::PackageIndex, info::BindingInfo) = getentry(I, :symbols, info.symbol_id)
+getmodule(pkgindex::PackageIndex, id) = pkgindex.data.modules[pkgindex.index.modules[id]]
+getmodule(pkgindex::PackageIndex, info::SymbolInfo) = getmodule(pkgindex, info.module_id)
+function getsymbol(pkgindex::PackageIndex, info::BindingInfo)
+    getentry(pkgindex, :symbols, info.symbol_id)
+end
 
-getbinding(I::PackageIndex, id::String) = getentry(I, :bindings, id)
+getbinding(pkgindex::PackageIndex, id::String) = getentry(pkgindex, :bindings, id)
 
-function getentry(I::PackageIndex, store::Symbol, id::String)
+function getentry(pkgindex::PackageIndex, store::Symbol, id::String)
     @assert store in keys(INFOS)
-    index = getproperty(I.index, store)
+    index = getproperty(pkgindex.index, store)
     haskey(index, id) || return nothing
-    return getproperty(I.data, store)[index[id]]
+    return getproperty(pkgindex.data, store)[index[id]]
 end
 
 """
-    resolvebinding(I::PackageIndex, modulename, bindingname)
-    resolvebinding(I::PackageIndex, modulenames, bindingname)
+    resolvebinding(pkgindex::PackageIndex, modulename, bindingname)
+    resolvebinding(pkgindex::PackageIndex, modulenames, bindingname)
 
 Search the package index for valid bindings for `bindingname` in the scope of one or more
 `modulename`s, returning a list of [`BindingInfo`](#)s.
@@ -48,6 +60,7 @@ Search the package index for valid bindings for `bindingname` in the scope of on
 {cell}
 ```julia
 using ModuleInfo, Pkg
+import ModuleInfo: resolvebinding
 
 pkgindex = PackageIndex([ModuleInfo, Pkg])
 
@@ -62,35 +75,35 @@ relevant packages are indexed:
 resolvebinding(pkgindex, ["ModuleInfo"], "ModuleInfo.resolvebinding")
 ```
 
-This includes dependency packages:
+This includes dependency packages, if they are indexed:
 
 {cell}
 ```julia
-resolvebinding(pkgindex, ["ModuleInfo"], "ModuleInfo.Pkg.pkgdir")
+resolvebinding(pkgindex, ["ModuleInfo"], "ModuleInfo.Pkg.status")
 ```
 
 """
-function resolvebinding(I::PackageIndex, m::String, b::String)
-    ret = _resolvebinding(I, m, split(b, '.'))
-    binding = isnothing(ret) ? nothing : ModuleInfo.getbinding(I, ret)
+function resolvebinding(pkgindex::PackageIndex, m::String, b::String)
+    ret = _resolvebinding(pkgindex, m, split(b, '.'))
+    binding = isnothing(ret) ? nothing : ModuleInfo.getbinding(pkgindex, ret)
 end
 
-function resolvebinding(I::PackageIndex, ms::Vector{String}, b::String)
-    filter(!isnothing, map(m -> resolvebinding(I, m, b), ms))
+function resolvebinding(pkgindex::PackageIndex, ms::Vector{String}, b::String)
+    filter(!isnothing, map(m -> resolvebinding(pkgindex, m, b), ms))
 end
 
-function _resolvebinding(I::PackageIndex, m::String, parts)
+function _resolvebinding(pkgindex::PackageIndex, m::String, parts)
     isempty(parts) && return nothing
     if m == parts[1]
-        return _resolvebinding(I, m, parts[2:end])
+        return _resolvebinding(pkgindex, m, parts[2:end])
     end
 
     if length(parts) == 1
         return "$m.$(only(parts))"
     else
-        bi = ModuleInfo.getbinding(I, "$m.$(parts[1])")
+        bi = ModuleInfo.getbinding(pkgindex, "$m.$(parts[1])")
         if !isnothing(bi)
-            return _resolvebinding(I, bi.symbol_id, parts[2:end])
+            return _resolvebinding(pkgindex, bi.symbol_id, parts[2:end])
         else
             return nothing
         end

@@ -1,11 +1,9 @@
 module ModuleInfo
 
-using CodeTracking: pkgfiles, whereis
 using StructArrays: StructArray
 using InlineTest
 using Markdown
 using Memoize: @memoize
-using DataFrames
 using Pkg
 import Scratch
 import JSON3

@@ -56,16 +56,16 @@ function readfromcache(cache::FileCache, info::PackageInfo)
     readcache(path)
 end
 
-function writecache(cache::FileCache, I::PackageIndex)
+function writecache(cache::FileCache, pkgindex::PackageIndex)
     !isdir(cache.dir) && mkpath(cache.dir)
-    for pkg in I.packages
+    for pkg in pkgindex.packages
         pdir = joinpath(cache.dir, pkg.name, pkg.version)
-        writecache(pdir, I, getid(pkg))
+        writecache(pdir, pkgindex, getid(pkg))
     end
 end
 
-function writecache(dir, I::PackageIndex, pkgid::String)
-    I_ = packageview(I, pkgid)
+function writecache(dir, pkgindex::PackageIndex, pkgid::String)
+    I_ = packageview(pkgindex, pkgid)
     mkpath(dir)
     for (k, xs) in pairs(I_.data)
         writetable(joinpath(dir, "$k.json"), xs)
@@ -93,18 +93,19 @@ writetable(io::IO, xs) = JSON3.write(io, xs)
 readtable(file::String, T) = open(f -> readtable(f, T), file, "r")
 readtable(io::IO, T) = StructArray(JSON3.read(io, Vector{T}))
 
-packageview(I::PackageIndex, pkgid::String) = packageview(I, [pkgid])
+packageview(pkgindex::PackageIndex, pkgid::String) = packageview(pkgindex, [pkgid])
 
-function packageview(I::PackageIndex, pkgids)
+function packageview(pkgindex::PackageIndex, pkgids)
     pkgids = Set(pkgids)
-    packages = @view I.packages[map(in(pkgids) ∘ getid, I.packages)]#getid.(I.packages) .∈ pkgids]
-    files = @view I.files[map(in(pkgids), I.files.package_id)]
-    modules = @view I.modules[map(in(pkgids), I.modules.package_id)]
+    packages = @view pkgindex.packages[map(in(pkgids) ∘ getid, pkgindex.packages)]#getid.(pkgindex.packages) .∈ pkgids]
+    files = @view pkgindex.files[map(in(pkgids), pkgindex.files.package_id)]
+    modules = @view pkgindex.modules[map(in(pkgids), pkgindex.modules.package_id)]
     module_ids = Set(modules.id)
-    symbols = @view I.symbols[map(in(module_ids), I.symbols.module_id)]
-    methods = @view I.methods[map(in(module_ids), I.methods.module_id)]
-    docstrings = @view I.docstrings[map(in(module_ids), I.docstrings.module_id)]
-    bindings = @view I.bindings[map(in(module_ids), I.bindings.module_id)]
+    symbols = @view pkgindex.symbols[map(in(module_ids), pkgindex.symbols.module_id)]
+    methods = @view pkgindex.methods[map(in(module_ids), pkgindex.methods.module_id)]
+    docstrings = @view pkgindex.docstrings[map(in(module_ids),
+                                               pkgindex.docstrings.module_id)]
+    bindings = @view pkgindex.bindings[map(in(module_ids), pkgindex.bindings.module_id)]
     return PackageIndex((; packages, files, modules, symbols, methods, docstrings,
                          bindings))
 end

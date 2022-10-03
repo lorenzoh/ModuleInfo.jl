@@ -4,9 +4,6 @@ authors = ["lorenzoh <lorenz.ohly@gmail.com> and contributors"]
 version = "0.1.0"
 
 [deps]
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
-CodeTracking = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
 InlineTest = "bd334432-b1e7-49c7-a2dc-dd9149e4ebd6"
 JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
