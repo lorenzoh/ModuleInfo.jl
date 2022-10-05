@@ -3,26 +3,70 @@ base_directory = "."
 url_prefix = ""
 
     [[input.files]]
-    title = "Pollen.jl"
-    contents = "Pollen.jl\nA document generation system based on tree rewriting built for interactive work.\nNote: The documentation for this package is still a work in progress and while Pollen.jl already powers the documentation of some packages like FastAI.jl, it is not as stable or mature as other solutions like Documenter.jl.\nGetting started\nFirst, find out how to install Pollen and then how to setup package documentation.\n\n"
-    url = "Pollen@0.1.0/doc/README.md"
+    title = "ModuleInfo/project.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/project.jl"
     [[input.files]]
-    title = "How to install Pollen.jl"
-    contents = "How to install Pollen.jl\nPollen.jl is a package for the Julia programming language and can be installed like other packages using the built-in package managero\nIn development\nSince Pollen.jl is not yet released and has some unreleased package dependencies, you'll have to install these directly from their repositories for now as shown below.\n\n\nRun the following in a Julia session to install Pollen and its dependencies:\n\n\n"
-    url = "Pollen@0.1.0/doc/docs/howto/install.md"
+    title = "ModuleInfo/cache.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/cache.jl"
     [[input.files]]
-    title = "Creating, writing and publishing package documentation"
-    contents = "Creating, writing and publishing package documentation\nThis tutorial will teach you how to create a new Julia package with Pollen.jl documentation to get a site just like the one you are probably reading this on. After reading this, you will have learned how to\ncreate a Julia package and set up Pollen as its documentation system,\n\nuse Pollen's development server with live reload to preview changes as you make them; and\n\nhow to publish the package documentation to GitHub Pages\n\n\nYou can see the resulting project and its documentation at lorenzoh/PollenExample.jl.\nInstallation\nBefore starting the tutorial, make sure you've followed the installation instructions for Pollen.jl.\n\n\nCreating a package with Pollen.jl documentation\nDocumentation for an existing package\nThis section describes how to add Pollen documentation when creating a new package. It is also possible to add Pollen.jl documentation to an existing package as described here.\n\n\nThe most commonly used tool for creating new Julia packages is PkgTemplates.jl. Pollen.jl provides a plugin for PkgTemplates.jl to spare you any arduous setup tasks.\nTo create a template, make sure you have PkgTemplates installed and create a template with the Pollen plugin:\n\nFollowing along\nIf you want to follow along and host the tutorial project on GitHub pages, make sure to replace \"lorenzoh\" with your GitHub user name.\n\n\nNext, we'll instantiate the template by calling it with the name of the package we want to create:\n\nOnce this is done, you'll have a brand new package ready to use Pollen.jl's documentation system.\nWriting documentation interactively\nNow, we'll work on the documentation and preview it locally. If a package has Pollen documentation set up, you can run an preview server with live reload using Pollen.servedocs:\n\nOnce you see messages that two servers are running on ports 3000 and 8000, you can click the first link (http://localhost:3000/dev/i) to see a preview of the documentation. The first time we run this, Pollen has to install the frontend, but subsequent runs will be much faster. The opened page should look like this:\n\nThe landing page shows our package's README.md which, of course, is almost empty! Let's keep the server running and edit the file, for example by adding some text under the heading. Save the file, return to the documentation web page and press R. The page should update with the text you added to the README. For example:\n\nGreat job! We just updated part of the documentation. While there are a lot more things we could change about the docs at this point, we'll leave them for another tutorial and get to the last part in this tutorial: publishing our package's documentation as a website.\nPublishing the documentation on GitHub Pages\nIf you used the template from the first part of this tutorial, the package directory will already be a git repository. First, we need to make sure to commit the changes we made above:\n> cd ~/.julia/dev/PollenExample\n> git add .\n> git commit -m \"Modified README\"\nNow, you'll need to create a GitHub repository at /$username/PollenExample.jl. If you used your GitHub user in the template above, the local repository's remote should be set up correctly. Now we'll push our changes, and also two helper branches that Pollen uses to host a page:\n> git checkout pollen && git push --set-upstream origin pollen\n> git checkout gh-pages && git push --set-upstream origin gh-pages\n> git checkout main && git push --set-upstream origin main\nThat's it! After about 10 minutes, you'll have a documentation page built at $username.github.io/PollenExample.jl/dev/i.\nNow, every time you push changes to your package's main branch, the documentation page will be updated!\n\nNow that we've built a workflow for publishing documentation, it's time to find out how you to organize your documentation! (follow-up tutorial coming soon 👀)\n\n"
-    url = "Pollen@0.1.0/doc/docs/tutorials/setup.md"
+    title = "ModuleInfo/introspection.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/introspection.jl"
     [[input.files]]
-    title = "How to set up package documentation"
-    contents = "How to set up package documentation\nHow-to for setting up Pollen.jl documentation for packages. See the tutorial for a more in-depth look.\nPollen.jl comes with a PkgTemplates.jl template that performs necessary setup steps to add Pollen documentation to a new package you're creating. To use it, add Pollen.PollenPlugin to the list of plugins when constructing a package template, and call it to create a package:\n\nSetting up Pollen.jl documentation for an existing package\nIf you want to add Pollen documentation to an existing package, make sure to remove any Documenter.jl-specific files, e.g. by renaming the existing \"docs/\" folder.\nYou can then call the plugin manually:\n\n\n"
-    url = "Pollen@0.1.0/doc/docs/howto/setup.md"
+    title = "ModuleInfo/ModuleInfo.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/ModuleInfo.jl"
     [[input.files]]
-    title = "Working with documents"
-    contents = "Working with documents\nIn this tutorial, you will learn how Pollen represents documents and how to load them from different file formats as wells as transform them.\nAt its core, Pollen is a package for creating and transforming documents. For example, this documentation is comprised of many different documents. This page, for example, is created from a Markdown file which you can find here: Pollen.jl/docs/tutorials/documents.md.\nThis tutorial will give you some insight into how Pollen documents are represented and how this representation makes many forms of common document processing steps possible.\nDocuments as trees\nIf you have worked with HTML before, you'll know that it uses a tree-like data format to represent documents. For example, the following is an HTML snippet of a paragraph with some marked up text:\n<p class=\"subtitle\">\n    Hello world, this is some <strong>marked up</strong> text.\n</p>\nPollen similarly represents documents as a tree. We can represent the above HTML as follows using Pollen:\n\nFormat-independent documents\nHTML is a natural source for this kind of data, but Pollen can read or write documents from and to different formats, like Markdown files, Julia source files, Jupyter notebooks and JSON.\nFor example, we can parse Markdown text and render it back as HTML:\n\n\nSupporting many different formats allows us to work with different source documents and apply the same set of powerful transformations to documents. So, what can we actually do with our documents?\nTransforming documents\nPollen uses document transformations to implement many different features like executing code cells, syntax highlighting, finding hyperreferences and more.\nTo get a feel for this, let's implement the following transformation: given a document with :code tags, evaluate the code as a Julia expression and replace it with the resulting value. For example, let's say we have this document (parsed from Markdown for convenience):\n\nThe result that we want is the same document, but the \"2 + 2\" replaced with the result of the calculation: 4.\n\nFinding the code tags\nTo transform the code \"2 + 2\", we first need to find it. For this, we'll use a Selector. Selectors allow us to find specific nodes or leaves in a document tree. Here, we'll use SelectTag to find all nodes with a :code tag.\n\nNext, we need to extract the string of code. Using AbstractTrees.children, we can see that the node has 1 child, a Leaf with a string value.\n\nWe can get the leaf value with empty index notation ([]):\n\nAnd we can execute the code:\n\nNow we know how to find nodes with code, how to get the code string, and how to run it. In the next step, we'll create a function that modifies a document, replacing code with its result.\nTransforming the tree\nIf our document was a list of nodes, we could find the relevant elements and map the code-running function over them. We can do something similar to a tree with a so-called catamorphism. At the risk of upsetting category theorists, I'll say that a catamorphism can be seen as a map over trees. Pollen implements it as the function cata which takes a function and a tree as arguments. The function is applied to all nodes and leaves, resulting in a new tree 🌳. For example, we can use it to modify the tags of all nodes:\n\ncata can also take a Selector as a third argument. If specified, only the nodes matchign the selector will be modified. We'll use the above selector to map our code-running function over all nodes with a :code tag.\n\nWith this, we've implemented a reusable transformation that can be applied to other documents as well. Go ahead and try it with some other examples!\n\nFinally, we can render the resulting document out to HTML. We wrap the HTML string in Base.HTML so that it's displayed as such here.\n\n\n"
-    url = "Pollen@0.1.0/doc/docs/tutorials/documents.md"
+    title = "PackageIndex"
+    contents = "PackageIndex(modules; kwargs...)\nIndex the packages that define modules. The created index contains tables of the following data associated with the packages:\npackages\n\nmodules\n\nsymbols\n\nmethods\n\ndocstrings\n\nsource files\n\nbindings\n\n\nKeyword arguments\ncache = false: Cache to use to store the index. If true, use the default, global file-based cache (ModuleInfo.CACHE[]). You can also pass a InfoCache directly. If a cache is used, already indexed packages will not be reindexed. In-development packages will be reindexed if they have changed since the cache was built.\n\nverbose = false: If true, print which package is being indexed while running.\n\npackages = nothing: Pass a Vector{String} to limit which packages are indexed to those specified. Useful when using the recurse option and you only want to index some dependencies.\n\nrecurse = 0: How many levels to recurse into packages' dependencies. The default 0 means no dependencies are indexed. 1 would mean that only direct dependencies of every package in packages are indexed.\n\npkgtags = Dict{String, String}(): A mapping of package_name => version_name that can be used to overwrite the version that a package will be saved as.\n\n\nExamples\nIndex a package:\n\nIndex a package and its direct dependencies:\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.PackageIndex"
     [[input.files]]
-    title = "How to add pages to documentation"
-    contents = "How to add pages to documentation\nTo add a new page to your documentation, add a file to\n\n"
-    url = "Pollen@0.1.0/doc/docs/howto/add_files.md"
+    title = "basemodule"
+    contents = "basemodule(m)\nRecursive version of parentmodule, returning the top-most module.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.basemodule"
+    [[input.files]]
+    title = "readfromcache"
+    contents = "readfromcache(cache, m)\nreadfromcache(cache, pkgid)\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readfromcache"
+    [[input.files]]
+    title = "addentry!"
+    contents = "addentry!(pkgindex, info; overwrite) -> Bool\nReturn whether an entry was added/modified. If overwrite = true, modifies existing entries, returning true.\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.addentry!"
+    [[input.files]]
+    title = "resolvebinding"
+    contents = "resolvebinding(pkgindex::PackageIndex, modulename, bindingname)\nresolvebinding(pkgindex::PackageIndex, modulenames, bindingname)\nSearch the package index for valid bindings for bindingname in the scope of one or more modulenames, returning a list of BindingInfos.\nExamples\n\nAll kinds of module accesses should resolve correctly if the relevant packages are indexed:\n\nThis includes dependency packages, if they are indexed:\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.resolvebinding"
+    [[input.files]]
+    title = "ModuleInfo/find.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/find.jl"
+    [[input.files]]
+    title = "ModuleInfo.jl"
+    contents = "ModuleInfo.jl\nA Julia package that makes it easy to index package data, including information on a package's modules, docstrings, source files, definitions and bindings.\nFeatures:\nindex packages, with support for recursively indexing dependencies and caching\n\nsearching and filtering\n\nuse index data with all Tables.jl-compliant data sinks, e.g. DataFrames.jl\n\nresolve identifiers in a module scope to find the symbol they refer to\n\n\nHere we index Base and all its submodules:\njulia> pkgindex = PackageIndex([Base])\nPackageIndex(1 package, 42 modules, 203 files, 3847 symbols, 7892 methods, 1267 docstrings, 5385 bindings)\njulia> DataFrame(pkgindex.modules)\n42×3 DataFrame\n Row │ id                          parent                package_id \n     │ String                      Union…                String     \n─────┼──────────────────────────────────────────────────────────────\n   1 │ Base                        Main                  Base@1.8.1\n   2 │ Base.BaseDocs               Base                  Base@1.8.1\n   3 │ Base.BinaryPlatforms        Base                  Base@1.8.1\n   4 │ Base.BinaryPlatforms.CPUID  Base.BinaryPlatforms  Base@1.8.1\n   5 │ Base.Broadcast              Base                  Base@1.8.1\n  ⋮  │             ⋮                        ⋮                ⋮\n  39 │ Base.Sys                    Base                  Base@1.8.1\n  40 │ Base.TOML                   Base                  Base@1.8.1\n  41 │ Base.Threads                Base                  Base@1.8.1\n  42 │ Base.Unicode                Base                  Base@1.8.1\n                                                     33 rows omitted\n\n"
+    url = "ModuleInfo@dev/doc/README.md"
+    [[input.files]]
+    title = "ModuleInfo/types.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/types.jl"
+    [[input.files]]
+    title = "runtests"
+    contents = "ModuleInfo.runtests(pattern...; kwargs...)\nEquivalent to ReTest.retest(ModuleInfo, pattern...; kwargs...). This function is defined automatically in any module containing a @testset, possibly nested within submodules.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.runtests"
+    [[input.files]]
+    title = "ModuleInfo/index.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/index.jl"
+    [[input.files]]
+    title = "iscached"
+    contents = "iscached(cache, m)\niscached(cache, pkgid)\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.iscached"
+    [[input.files]]
+    title = "extend!"
+    contents = "extend!(pkgindex, data)\nAdd *Info entries to an existing PackageIndex.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.extend!"
+    [[input.files]]
+    title = "ModuleInfo/store.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/store.jl"
