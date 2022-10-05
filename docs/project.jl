@@ -1,5 +1,4 @@
-using Pollen
-using Pkg
+using Pollen, ModuleInfo, Pkg
 
 # The main package you are documenting
 using ModuleInfo
@@ -10,21 +9,24 @@ m = ModuleInfo
 # to the list.
 ms = [m]
 
-function createpackageindex(; tag = "dev")
-    pkgtags = Dict("ModuleInfo" => tag)
-    return PackageIndex(ms; recurse = 1, pkgtags, cache = true, verbose = true)
+function createpackageindex(; package = m, modules = ms, tag = "dev")
+    pkgtags = Dict(string(package) => tag)
+    return PackageIndex(ms; recurse = 0, pkgtags, cache = true, verbose = true)
 end
 
 
-function createproject(; tag = "dev")
-    pkgtags = Dict("ModuleInfo" => tag)
-    pkgindex = createpackageindex(; tag)
-    packages = [ModuleInfo.getid(pkgindex.packages[1]), pkgindex.packages[1].dependencies...]
+function createproject(; tag = "dev", package = m, modules = ms)
+    pkgindex = createpackageindex(; tag, package, modules)
+    pkgtags = Dict(string(package) => tag)
+    packages = [
+        ModuleInfo.getid(pkgindex.packages[1]),
+        [d for d in pkgindex.packages[1].dependencies
+        if d in ModuleInfo.getid.(pkgindex.packages)]...]
 
     project = Project([
         # Add written documentation, source files, and symbol docstrings as pages
-        DocumentationFiles([Pollen]; pkgtags),
-        SourceFiles(ms; pkgtags),
+        DocumentationFiles([package]; pkgtags),
+        SourceFiles(modules; pkgtags),
         ModuleReference(pkgindex),
 
         # Parse and run code
@@ -38,9 +40,9 @@ function createproject(; tag = "dev")
         CheckLinks(),
 
         # Provide data for the frontend
-        StorkSearchIndex(; tag, filterfn = id -> startswith(id, "Pollen")),
+        StorkSearchIndex(; tag, filterfn = id -> startswith(id, string(package))),
         SaveAttributes((:title, :backlinks => []), useoutputs = true),
-        DocVersions(Pollen; tag = tag, dependencies = packages),
+        DocVersions(package; tag = tag, dependencies = packages),
     ])
 
 
