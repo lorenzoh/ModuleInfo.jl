@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.safe_uuid","module_id":"Pkg.Types","file":"manifest.jl","line":28,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"safe_uuid","symbol_id":"Pkg.Types.safe_uuid","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

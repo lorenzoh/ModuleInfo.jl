@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.tree_hash","module_id":"Pkg.API","file":"API.jl","line":1489,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"tree_hash","symbol_id":"Pkg.API.tree_hash","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

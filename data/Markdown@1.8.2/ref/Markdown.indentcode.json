@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.indentcode","module_id":"Markdown","file":"Common/block.jl","line":105,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"indentcode","symbol_id":"Markdown.indentcode","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.handle_repos_add!","module_id":"Pkg.Types","file":"Types.jl","line":769,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"handle_repos_add!","symbol_id":"Pkg.Types.handle_repos_add!","exported":true,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

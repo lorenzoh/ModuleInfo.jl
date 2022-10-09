@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.read_manifest","module_id":"Pkg.Types","file":"manifest.jl","line":182,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"read_manifest","symbol_id":"Pkg.Types.read_manifest","exported":true,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

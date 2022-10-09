@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"JSON3.getbuf","module_id":"JSON3","file":"JSON3.jl","line":23,"signature":"(::Signature)"}],"package_id":"JSON3@1.10.0","title":"getbuf","symbol_id":"JSON3.getbuf","exported":false,"module_id":"JSON3"},"tag":"documentation","children":[],"type":"node"}

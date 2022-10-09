@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.MaxSumParams","module_id":"Pkg.Resolve","file":"Resolve/maxsum.jl","line":15,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"MaxSumParams","symbol_id":"Pkg.Resolve.MaxSumParams","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

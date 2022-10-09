@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.GitTools.ensure_clone","module_id":"Pkg.GitTools","file":"GitTools.jl","line":70,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"ensure_clone","symbol_id":"Pkg.GitTools.ensure_clone","exported":false,"module_id":"Pkg.GitTools"},"tag":"documentation","children":[],"type":"node"}

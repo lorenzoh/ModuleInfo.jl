@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.Messages","module_id":"Pkg.Resolve","file":"Resolve/maxsum.jl","line":45,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"Messages","symbol_id":"Pkg.Resolve.Messages","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

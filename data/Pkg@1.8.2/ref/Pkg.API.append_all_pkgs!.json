@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.append_all_pkgs!","module_id":"Pkg.API","file":"API.jl","line":307,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"append_all_pkgs!","symbol_id":"Pkg.API.append_all_pkgs!","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

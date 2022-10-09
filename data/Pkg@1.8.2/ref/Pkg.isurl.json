@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.isurl","module_id":"Pkg","file":"utils.jl","line":25,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"isurl","symbol_id":"Pkg.isurl","exported":false,"module_id":"Pkg"},"tag":"documentation","children":[],"type":"node"}

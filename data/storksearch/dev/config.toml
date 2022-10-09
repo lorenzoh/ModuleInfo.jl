@@ -1,0 +1,72 @@
+[input]
+base_directory = "."
+url_prefix = ""
+
+    [[input.files]]
+    title = "ModuleInfo/project.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/project.jl"
+    [[input.files]]
+    title = "ModuleInfo/cache.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/cache.jl"
+    [[input.files]]
+    title = "ModuleInfo/introspection.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/introspection.jl"
+    [[input.files]]
+    title = "ModuleInfo/ModuleInfo.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/ModuleInfo.jl"
+    [[input.files]]
+    title = "PackageIndex"
+    contents = "PackageIndex(modules; kwargs...)\nIndex the packages that define modules. The created index contains tables of the following data associated with the packages:\npackages\n\nmodules\n\nsymbols\n\nmethods\n\ndocstrings\n\nsource files\n\nbindings\n\n\nKeyword arguments\ncache = false: Cache to use to store the index. If true, use the default, global file-based cache (ModuleInfo.CACHE[]). You can also pass a InfoCache directly. If a cache is used, already indexed packages will not be reindexed. In-development packages will be reindexed if they have changed since the cache was built.\n\nverbose = false: If true, print which package is being indexed while running.\n\npackages = nothing: Pass a Vector{String} to limit which packages are indexed to those specified. Useful when using the recurse option and you only want to index some dependencies.\n\nrecurse = 0: How many levels to recurse into packages' dependencies. The default 0 means no dependencies are indexed. 1 would mean that only direct dependencies of every package in packages are indexed.\n\npkgtags = Dict{String, String}(): A mapping of package_name => version_name that can be used to overwrite the version that a package will be saved as.\n\n\nExamples\nIndex a package:\n\nIndex a package and its direct dependencies:\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.PackageIndex"
+    [[input.files]]
+    title = "basemodule"
+    contents = "basemodule(m)\nRecursive version of parentmodule, returning the top-most module.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.basemodule"
+    [[input.files]]
+    title = "readfromcache"
+    contents = "readfromcache(cache, m)\nreadfromcache(cache, pkgid)\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readfromcache"
+    [[input.files]]
+    title = "addentry!"
+    contents = "addentry!(pkgindex, info; overwrite) -> Bool\nReturn whether an entry was added/modified. If overwrite = true, modifies existing entries, returning true.\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.addentry!"
+    [[input.files]]
+    title = "resolvebinding"
+    contents = "resolvebinding(pkgindex::PackageIndex, modulename, bindingname)\nresolvebinding(pkgindex::PackageIndex, modulenames, bindingname)\nSearch the package index for valid bindings for bindingname in the scope of one or more modulenames, returning a list of BindingInfos.\nExamples\n\nAll kinds of module accesses should resolve correctly if the relevant packages are indexed:\n\nThis includes dependency packages, if they are indexed:\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.resolvebinding"
+    [[input.files]]
+    title = "ModuleInfo/find.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/find.jl"
+    [[input.files]]
+    title = "ModuleInfo.jl"
+    contents = "ModuleInfo.jl\nA Julia package that makes it easy to index package data, including information on a package's modules, docstrings, source files, definitions and bindings.\nFeatures:\nindex packages, with support for recursively indexing dependencies and caching\n\nsearching and filtering\n\nuse index data with all Tables.jl-compliant data sinks, e.g. DataFrames.jl\n\nresolve identifiers in a module scope to find the symbol they refer to\n\n\nHere we index Base and all its submodules:\njulia> pkgindex = PackageIndex([Base])\nPackageIndex(1 package, 42 modules, 203 files, 3847 symbols, 7892 methods, 1267 docstrings, 5385 bindings)\njulia> DataFrame(pkgindex.modules)\n42×3 DataFrame\n Row │ id                          parent                package_id \n     │ String                      Union…                String     \n─────┼──────────────────────────────────────────────────────────────\n   1 │ Base                        Main                  Base@1.8.1\n   2 │ Base.BaseDocs               Base                  Base@1.8.1\n   3 │ Base.BinaryPlatforms        Base                  Base@1.8.1\n   4 │ Base.BinaryPlatforms.CPUID  Base.BinaryPlatforms  Base@1.8.1\n   5 │ Base.Broadcast              Base                  Base@1.8.1\n  ⋮  │             ⋮                        ⋮                ⋮\n  39 │ Base.Sys                    Base                  Base@1.8.1\n  40 │ Base.TOML                   Base                  Base@1.8.1\n  41 │ Base.Threads                Base                  Base@1.8.1\n  42 │ Base.Unicode                Base                  Base@1.8.1\n                                                     33 rows omitted\n\n"
+    url = "ModuleInfo@dev/doc/README.md"
+    [[input.files]]
+    title = "ModuleInfo/types.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/types.jl"
+    [[input.files]]
+    title = "runtests"
+    contents = "ModuleInfo.runtests(pattern...; kwargs...)\nEquivalent to ReTest.retest(ModuleInfo, pattern...; kwargs...). This function is defined automatically in any module containing a @testset, possibly nested within submodules.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.runtests"
+    [[input.files]]
+    title = "ModuleInfo/index.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/index.jl"
+    [[input.files]]
+    title = "iscached"
+    contents = "iscached(cache, m)\niscached(cache, pkgid)\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.iscached"
+    [[input.files]]
+    title = "extend!"
+    contents = "extend!(pkgindex, data)\nAdd *Info entries to an existing PackageIndex.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.extend!"
+    [[input.files]]
+    title = "ModuleInfo/store.jl"
+    contents = "\n"
+    url = "ModuleInfo@dev/src/store.jl"

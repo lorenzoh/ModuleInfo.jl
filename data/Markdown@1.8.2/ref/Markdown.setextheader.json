@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.setextheader","module_id":"Markdown","file":"Common/block.jl","line":75,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"setextheader","symbol_id":"Markdown.setextheader","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

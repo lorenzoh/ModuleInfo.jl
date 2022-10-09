@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.API.handle_package_input!","module_id":"Pkg.API","file":"API.jl","line":1903,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"handle_package_input!","symbol_id":"Pkg.API.handle_package_input!","exported":false,"module_id":"Pkg.API"},"tag":"documentation","children":[],"type":"node"}

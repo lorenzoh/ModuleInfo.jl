@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.write_env","module_id":"Pkg.Types","file":"Types.jl","line":1031,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"write_env","symbol_id":"Pkg.Types.write_env","exported":true,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

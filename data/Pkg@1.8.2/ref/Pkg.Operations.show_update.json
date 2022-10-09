@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Operations.show_update","module_id":"Pkg.Operations","file":"Operations.jl","line":2139,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"show_update","symbol_id":"Pkg.Operations.show_update","exported":false,"module_id":"Pkg.Operations"},"tag":"documentation","children":[],"type":"node"}

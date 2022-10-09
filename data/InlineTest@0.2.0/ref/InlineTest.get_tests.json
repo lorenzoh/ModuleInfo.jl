@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"InlineTest.get_tests","module_id":"InlineTest","file":"InlineTest.jl","line":35,"signature":"(::Signature)"}],"package_id":"InlineTest@0.2.0","title":"get_tests","symbol_id":"InlineTest.get_tests","exported":false,"module_id":"InlineTest"},"tag":"documentation","children":[],"type":"node"}

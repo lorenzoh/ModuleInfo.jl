@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"JSON3.utf16_get_supplementary","module_id":"JSON3","file":"strings.jl","line":38,"signature":"(::Signature)"}],"package_id":"JSON3@1.10.0","title":"utf16_get_supplementary","symbol_id":"JSON3.utf16_get_supplementary","exported":false,"module_id":"JSON3"},"tag":"documentation","children":[],"type":"node"}

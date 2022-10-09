@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Versions.semver_interval","module_id":"Pkg.Versions","file":"Versions.jl","line":313,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"semver_interval","symbol_id":"Pkg.Versions.semver_interval","exported":false,"module_id":"Pkg.Versions"},"tag":"documentation","children":[],"type":"node"}

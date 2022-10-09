@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"JSON3.WriteClosure","module_id":"JSON3","file":"write.jl","line":105,"signature":"(::Signature)"}],"package_id":"JSON3@1.10.0","title":"WriteClosure","symbol_id":"JSON3.WriteClosure","exported":false,"module_id":"JSON3"},"tag":"documentation","children":[],"type":"node"}

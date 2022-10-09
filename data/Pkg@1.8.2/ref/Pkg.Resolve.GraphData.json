@@ -1,0 +1,1 @@
+{"attributes":{"kind":"struct","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.GraphData","module_id":"Pkg.Resolve","file":"Resolve/graphtype.jl","line":115,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"GraphData","symbol_id":"Pkg.Resolve.GraphData","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

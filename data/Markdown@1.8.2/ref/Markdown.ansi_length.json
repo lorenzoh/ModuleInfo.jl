@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Markdown.ansi_length","module_id":"Markdown","file":"render/terminal/formatting.jl","line":5,"signature":"(::Signature)"}],"package_id":"Markdown@1.8.2","title":"ansi_length","symbol_id":"Markdown.ansi_length","exported":false,"module_id":"Markdown"},"tag":"documentation","children":[],"type":"node"}

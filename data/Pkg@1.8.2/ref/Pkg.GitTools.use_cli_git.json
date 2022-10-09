@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.GitTools.use_cli_git","module_id":"Pkg.GitTools","file":"GitTools.jl","line":13,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"use_cli_git","symbol_id":"Pkg.GitTools.use_cli_git","exported":false,"module_id":"Pkg.GitTools"},"tag":"documentation","children":[],"type":"node"}

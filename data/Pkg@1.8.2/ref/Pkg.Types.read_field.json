@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.read_field","module_id":"Pkg.Types","file":"manifest.jl","line":4,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"read_field","symbol_id":"Pkg.Types.read_field","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

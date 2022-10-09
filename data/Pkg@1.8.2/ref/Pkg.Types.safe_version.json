@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.safe_version","module_id":"Pkg.Types","file":"manifest.jl","line":47,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"safe_version","symbol_id":"Pkg.Types.safe_version","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

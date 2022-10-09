@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Operations.get_or_make!","module_id":"Pkg.Operations","file":"Operations.jl","line":392,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"get_or_make!","symbol_id":"Pkg.Operations.get_or_make!","exported":false,"module_id":"Pkg.Operations"},"tag":"documentation","children":[],"type":"node"}

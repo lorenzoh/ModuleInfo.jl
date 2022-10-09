@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.REPLMode.gen_help","module_id":"Pkg.REPLMode","file":"REPLMode/REPLMode.jl","line":634,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"gen_help","symbol_id":"Pkg.REPLMode.gen_help","exported":false,"module_id":"Pkg.REPLMode"},"tag":"documentation","children":[],"type":"node"}

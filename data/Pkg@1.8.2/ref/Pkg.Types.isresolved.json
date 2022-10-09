@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.isresolved","module_id":"Pkg.Types","file":"Types.jl","line":138,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"isresolved","symbol_id":"Pkg.Types.isresolved","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

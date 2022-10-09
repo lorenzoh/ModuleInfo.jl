@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Resolve.is_julia","module_id":"Pkg.Resolve","file":"Resolve/graphtype.jl","line":977,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"is_julia","symbol_id":"Pkg.Resolve.is_julia","exported":false,"module_id":"Pkg.Resolve"},"tag":"documentation","children":[],"type":"node"}

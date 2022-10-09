@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.Types.listed_deps","module_id":"Pkg.Types","file":"project.jl","line":4,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"listed_deps","symbol_id":"Pkg.Types.listed_deps","exported":false,"module_id":"Pkg.Types"},"tag":"documentation","children":[],"type":"node"}

@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.casesensitive_isdir","module_id":"Pkg","file":"utils.jl","line":88,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"casesensitive_isdir","symbol_id":"Pkg.casesensitive_isdir","exported":false,"module_id":"Pkg"},"tag":"documentation","children":[],"type":"node"}

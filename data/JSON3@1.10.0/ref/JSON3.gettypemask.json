@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"JSON3.gettypemask","module_id":"JSON3","file":"utils.jl","line":113,"signature":"(::Signature)"}],"package_id":"JSON3@1.10.0","title":"gettypemask","symbol_id":"JSON3.gettypemask","exported":false,"module_id":"JSON3"},"tag":"documentation","children":[],"type":"node"}

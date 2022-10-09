@@ -1,0 +1,1 @@
+{"attributes":{"kind":"function","backlinks":[],"methods":[{"symbol_id":"Pkg.REPLMode.is_opt","module_id":"Pkg.REPLMode","file":"REPLMode/REPLMode.jl","line":148,"signature":"(::Signature)"}],"package_id":"Pkg@1.8.2","title":"is_opt","symbol_id":"Pkg.REPLMode.is_opt","exported":false,"module_id":"Pkg.REPLMode"},"tag":"documentation","children":[],"type":"node"}
