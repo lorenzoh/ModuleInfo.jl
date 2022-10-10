@@ -3,70 +3,342 @@ base_directory = "."
 url_prefix = ""
 
     [[input.files]]
-    title = "ModuleInfo/project.jl"
-    contents = "\n"
-    url = "ModuleInfo@dev/src/project.jl"
+    title = "getdeps"
+    contents = "getdeps"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getdeps"
+    [[input.files]]
+    title = "Maybe"
+    contents = "Maybe"
+    url = "ModuleInfo@dev/ref/ModuleInfo.Maybe"
+    [[input.files]]
+    title = "f"
+    contents = "f"
+    url = "ModuleInfo@dev/ref/ModuleInfo.A.B.f"
     [[input.files]]
     title = "ModuleInfo/cache.jl"
-    contents = "\n"
+    contents = "_ _ throw ValueError _ dir Any cache info name version split info path joinpath cache dir name version isdir path occursin devdir info basedir cachetime stat joinpath path mtime cachetime info basedir cache info name version split info path joinpath cache dir name version path cache pkgindex isdir cache dir mkpath cache dir pkg pkgindex packages pdir joinpath cache dir pkg name pkg version pdir pkgindex pkg dir pkgindex pkgid String I_ pkgindex pkgid mkpath dir k xs pairs I_ data joinpath dir k xs packages modules symbols docstrings files methods dir NamedTuple k joinpath dir k T k T pairs file String xs open xs file io IO xs write io xs file String T open T file io IO T StructArray read io Vector T pkgindex pkgid String pkgindex pkgid pkgindex pkgids pkgids Set pkgids packages pkgindex packages map in pkgids pkgindex packages files pkgindex files map in pkgids pkgindex files package_id modules pkgindex modules map in pkgids pkgindex modules package_id module_ids Set modules id symbols pkgindex symbols map in module_ids pkgindex symbols module_id methods pkgindex methods map in module_ids pkgindex methods module_id docstrings pkgindex docstrings map in module_ids pkgindex docstrings module_id pkgindex map in module_ids pkgindex module_id packages files modules symbols methods docstrings \n"
     url = "ModuleInfo@dev/src/cache.jl"
     [[input.files]]
-    title = "ModuleInfo/introspection.jl"
-    contents = "\n"
-    url = "ModuleInfo@dev/src/introspection.jl"
+    title = "A"
+    contents = "A"
+    url = "ModuleInfo@dev/ref/ModuleInfo.A"
     [[input.files]]
-    title = "ModuleInfo/ModuleInfo.jl"
-    contents = "\n"
-    url = "ModuleInfo@dev/src/ModuleInfo.jl"
+    title = "filterview"
+    contents = "filterview"
+    url = "ModuleInfo@dev/ref/ModuleInfo.filterview"
     [[input.files]]
-    title = "PackageIndex"
-    contents = "PackageIndex(modules; kwargs...)\nIndex the packages that define modules. The created index contains tables of the following data associated with the packages:\npackages\n\nmodules\n\nsymbols\n\nmethods\n\ndocstrings\n\nsource files\n\nbindings\n\n\nKeyword arguments\ncache = false: Cache to use to store the index. If true, use the default, global file-based cache (ModuleInfo.CACHE[]). You can also pass a InfoCache directly. If a cache is used, already indexed packages will not be reindexed. In-development packages will be reindexed if they have changed since the cache was built.\n\nverbose = false: If true, print which package is being indexed while running.\n\npackages = nothing: Pass a Vector{String} to limit which packages are indexed to those specified. Useful when using the recurse option and you only want to index some dependencies.\n\nrecurse = 0: How many levels to recurse into packages' dependencies. The default 0 means no dependencies are indexed. 1 would mean that only direct dependencies of every package in packages are indexed.\n\npkgtags = Dict{String, String}(): A mapping of package_name => version_name that can be used to overwrite the version that a package will be saved as.\n\n\nExamples\nIndex a package:\n\nIndex a package and its direct dependencies:\n\n\n"
-    url = "ModuleInfo@dev/ref/ModuleInfo.PackageIndex"
+    title = "readcache"
+    contents = "readcache"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readcache"
     [[input.files]]
     title = "basemodule"
     contents = "basemodule(m)\nRecursive version of parentmodule, returning the top-most module.\n\n"
     url = "ModuleInfo@dev/ref/ModuleInfo.basemodule"
     [[input.files]]
-    title = "readfromcache"
-    contents = "readfromcache(cache, m)\nreadfromcache(cache, pkgid)\n\n"
-    url = "ModuleInfo@dev/ref/ModuleInfo.readfromcache"
+    title = "symbolid"
+    contents = "symbolid"
+    url = "ModuleInfo@dev/ref/ModuleInfo.symbolid"
     [[input.files]]
-    title = "addentry!"
-    contents = "addentry!(pkgindex, info; overwrite) -> Bool\nReturn whether an entry was added/modified. If overwrite = true, modifies existing entries, returning true.\n\n\n"
-    url = "ModuleInfo@dev/ref/ModuleInfo.addentry!"
-    [[input.files]]
-    title = "resolvebinding"
-    contents = "resolvebinding(pkgindex::PackageIndex, modulename, bindingname)\nresolvebinding(pkgindex::PackageIndex, modulenames, bindingname)\nSearch the package index for valid bindings for bindingname in the scope of one or more modulenames, returning a list of BindingInfos.\nExamples\n\nAll kinds of module accesses should resolve correctly if the relevant packages are indexed:\n\nThis includes dependency packages, if they are indexed:\n\n\n"
-    url = "ModuleInfo@dev/ref/ModuleInfo.resolvebinding"
-    [[input.files]]
-    title = "ModuleInfo/find.jl"
-    contents = "\n"
-    url = "ModuleInfo@dev/src/find.jl"
+    title = "isvalidmodule"
+    contents = "isvalidmodule"
+    url = "ModuleInfo@dev/ref/ModuleInfo.isvalidmodule"
     [[input.files]]
     title = "ModuleInfo.jl"
     contents = "ModuleInfo.jl\nA Julia package that makes it easy to index package data, including information on a package's modules, docstrings, source files, definitions and bindings.\nFeatures:\nindex packages, with support for recursively indexing dependencies and caching\n\nsearching and filtering\n\nuse index data with all Tables.jl-compliant data sinks, e.g. DataFrames.jl\n\nresolve identifiers in a module scope to find the symbol they refer to\n\n\nHere we index Base and all its submodules:\njulia> pkgindex = PackageIndex([Base])\nPackageIndex(1 package, 42 modules, 203 files, 3847 symbols, 7892 methods, 1267 docstrings, 5385 bindings)\njulia> DataFrame(pkgindex.modules)\n42×3 DataFrame\n Row │ id                          parent                package_id \n     │ String                      Union…                String     \n─────┼──────────────────────────────────────────────────────────────\n   1 │ Base                        Main                  Base@1.8.1\n   2 │ Base.BaseDocs               Base                  Base@1.8.1\n   3 │ Base.BinaryPlatforms        Base                  Base@1.8.1\n   4 │ Base.BinaryPlatforms.CPUID  Base.BinaryPlatforms  Base@1.8.1\n   5 │ Base.Broadcast              Base                  Base@1.8.1\n  ⋮  │             ⋮                        ⋮                ⋮\n  39 │ Base.Sys                    Base                  Base@1.8.1\n  40 │ Base.TOML                   Base                  Base@1.8.1\n  41 │ Base.Threads                Base                  Base@1.8.1\n  42 │ Base.Unicode                Base                  Base@1.8.1\n                                                     33 rows omitted\n\n"
     url = "ModuleInfo@dev/doc/README.md"
     [[input.files]]
+    title = "indexpackage!"
+    contents = "indexpackage!"
+    url = "ModuleInfo@dev/ref/ModuleInfo.indexpackage!"
+    [[input.files]]
+    title = "getsymbols"
+    contents = "getsymbols"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getsymbols"
+    [[input.files]]
+    title = "parentmoduleid"
+    contents = "parentmoduleid"
+    url = "ModuleInfo@dev/ref/ModuleInfo.parentmoduleid"
+    [[input.files]]
+    title = "getdepmodules"
+    contents = "getdepmodules"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getdepmodules"
+    [[input.files]]
     title = "ModuleInfo/types.jl"
-    contents = "\n"
+    contents = "name String uuid String version String basedir String dependencies Vector String info info name info version id String parent String package_id String package_id String file String info info package_id info file id String name String module_id String parent_module_id String kind Symbol exported Bool symbol_id String module_id String docstring String file String line Int info info symbol_id info module_id info file info line symbol_id String module_id String file String line Int signature String info info symbol_id info module_id info file info line id String name String module_id String symbol_id String exported Bool info info id StructType Type OrderedStruct packages modules symbols docstrings files methods \n"
     url = "ModuleInfo@dev/src/types.jl"
     [[input.files]]
-    title = "runtests"
-    contents = "ModuleInfo.runtests(pattern...; kwargs...)\nEquivalent to ReTest.retest(ModuleInfo, pattern...; kwargs...). This function is defined automatically in any module containing a @testset, possibly nested within submodules.\n\n"
-    url = "ModuleInfo@dev/ref/ModuleInfo.runtests"
-    [[input.files]]
-    title = "ModuleInfo/index.jl"
-    contents = "\n"
-    url = "ModuleInfo@dev/src/index.jl"
+    title = "MethodInfo"
+    contents = "MethodInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.MethodInfo"
     [[input.files]]
     title = "iscached"
     contents = "iscached(cache, m)\niscached(cache, pkgid)\n\n"
     url = "ModuleInfo@dev/ref/ModuleInfo.iscached"
     [[input.files]]
+    title = "getmodule"
+    contents = "getmodule"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getmodule"
+    [[input.files]]
     title = "extend!"
     contents = "extend!(pkgindex, data)\nAdd *Info entries to an existing PackageIndex.\n\n"
     url = "ModuleInfo@dev/ref/ModuleInfo.extend!"
     [[input.files]]
+    title = "getsymbol"
+    contents = "getsymbol"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getsymbol"
+    [[input.files]]
+    title = "getmultidoc"
+    contents = "getmultidoc"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getmultidoc"
+    [[input.files]]
+    title = "BindingInfo"
+    contents = "BindingInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.BindingInfo"
+    [[input.files]]
+    title = "getbinding"
+    contents = "getbinding"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getbinding"
+    [[input.files]]
+    title = "packageversion"
+    contents = "packageversion"
+    url = "ModuleInfo@dev/ref/ModuleInfo.packageversion"
+    [[input.files]]
+    title = "moduleid"
+    contents = "moduleid"
+    url = "ModuleInfo@dev/ref/ModuleInfo.moduleid"
+    [[input.files]]
+    title = "DocstringInfo"
+    contents = "DocstringInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.DocstringInfo"
+    [[input.files]]
+    title = "INFOS"
+    contents = "INFOS"
+    url = "ModuleInfo@dev/ref/ModuleInfo.INFOS"
+    [[input.files]]
+    title = "NoCache"
+    contents = "NoCache"
+    url = "ModuleInfo@dev/ref/ModuleInfo.NoCache"
+    [[input.files]]
+    title = "SymbolInfo"
+    contents = "SymbolInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.SymbolInfo"
+    [[input.files]]
+    title = "getpackages"
+    contents = "getpackages"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getpackages"
+    [[input.files]]
+    title = "bindings"
+    contents = "bindings"
+    url = "ModuleInfo@dev/ref/ModuleInfo.bindings"
+    [[input.files]]
+    title = "ModuleInfo/project.jl"
+    contents = "m Module m Base Symbol m Core Symbol file joinpath pkgdir m isfile file Symbol proj parsefile file deps get proj Dict String String Symbol collect keys deps m Module getfield m name name m isdefined m name getfield m name Module dir maximum Iterators map stat mtime glob relpath dir \n"
+    url = "ModuleInfo@dev/src/project.jl"
+    [[input.files]]
+    title = "ModuleInfo/ModuleInfo.jl"
+    contents = "ModuleInfo StructArrays StructArray Memoize Glob glob T Union Nothing T include include include include include include include z x Float16 y a Int Ref __init__ \n"
+    url = "ModuleInfo@dev/src/ModuleInfo.jl"
+    [[input.files]]
+    title = "writecache"
+    contents = "writecache"
+    url = "ModuleInfo@dev/ref/ModuleInfo.writecache"
+    [[input.files]]
+    title = "PackageIndex"
+    contents = "PackageIndex(modules; kwargs...)\nIndex the packages that define modules. The created index contains tables of the following data associated with the packages:\npackages\n\nmodules\n\nsymbols\n\nmethods\n\ndocstrings\n\nsource files\n\nbindings\n\n\nKeyword arguments\ncache = false: Cache to use to store the index. If true, use the default, global file-based cache (ModuleInfo.CACHE[]). You can also pass a InfoCache directly. If a cache is used, already indexed packages will not be reindexed. In-development packages will be reindexed if they have changed since the cache was built.\n\nverbose = false: If true, print which package is being indexed while running.\n\npackages = nothing: Pass a Vector{String} to limit which packages are indexed to those specified. Useful when using the recurse option and you only want to index some dependencies.\n\nrecurse = 0: How many levels to recurse into packages' dependencies. The default 0 means no dependencies are indexed. 1 would mean that only direct dependencies of every package in packages are indexed.\n\npkgtags = Dict{String, String}(): A mapping of package_name => version_name that can be used to overwrite the version that a package will be saved as.\n\n\nExamples\nIndex a package:\nModuleInfo pkgindex ModuleInfo \nIndex a package and its direct dependencies:\nModuleInfo pkgindex ModuleInfo recurse ModuleInfo pkgindex packages \n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.PackageIndex"
+    [[input.files]]
+    title = "InfoCache"
+    contents = "InfoCache"
+    url = "ModuleInfo@dev/ref/ModuleInfo.InfoCache"
+    [[input.files]]
+    title = "readdirrecursive"
+    contents = "readdirrecursive"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readdirrecursive"
+    [[input.files]]
+    title = "addentry!"
+    contents = "addentry!(pkgindex, info; overwrite) -> Bool\nReturn whether an entry was added/modified. If overwrite = true, modifies existing entries, returning true.\n\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.addentry!"
+    [[input.files]]
+    title = "pkgsrcdir"
+    contents = "pkgsrcdir"
+    url = "ModuleInfo@dev/ref/ModuleInfo.pkgsrcdir"
+    [[input.files]]
+    title = "getentry"
+    contents = "getentry"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getentry"
+    [[input.files]]
+    title = "FileCache"
+    contents = "FileCache"
+    url = "ModuleInfo@dev/ref/ModuleInfo.FileCache"
+    [[input.files]]
+    title = "getid"
+    contents = "getid"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getid"
+    [[input.files]]
+    title = "isstdlib"
+    contents = "isstdlib"
+    url = "ModuleInfo@dev/ref/ModuleInfo.isstdlib"
+    [[input.files]]
+    title = "getmodules"
+    contents = "getmodules"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getmodules"
+    [[input.files]]
+    title = "pkglastmodified"
+    contents = "pkglastmodified"
+    url = "ModuleInfo@dev/ref/ModuleInfo.pkglastmodified"
+    [[input.files]]
+    title = "shortsrcpath"
+    contents = "shortsrcpath"
+    url = "ModuleInfo@dev/ref/ModuleInfo.shortsrcpath"
+    [[input.files]]
+    title = "packagefiles"
+    contents = "packagefiles"
+    url = "ModuleInfo@dev/ref/ModuleInfo.packagefiles"
+    [[input.files]]
+    title = "newdata"
+    contents = "newdata"
+    url = "ModuleInfo@dev/ref/ModuleInfo.newdata"
+    [[input.files]]
+    title = "CACHE"
+    contents = "CACHE"
+    url = "ModuleInfo@dev/ref/ModuleInfo.CACHE"
+    [[input.files]]
+    title = "ModuleInfo/introspection.jl"
+    contents = "m m Base Base m Core Core parentmodule m m m parentmodule m m Module join fullname m m Module isnothing parentmodule m nothing parentmodule m m s getfield m s m m m s m isnothing match string nameof m m Module map s getfield m s filter names m all s isdefined m s subm getfield m s subm Module subm m parentmodule subm m m Module symbol m symbol m m Module symbol any sm symbol sm isdefined m symbol x getfield m symbol parentmodule x m isconst m symbol m s isdefined m s s include s eval isnothing match string s m Module pkgid Base PkgId m isnothing pkgid uuid pkgid name string pkgid uuid m Module m m m Core throw ArgumentError m Base abspath joinpath Sys BINDIR pdir pkgdir m isnothing pdir throw ArgumentError m joinpath pkgdir m m Module dir m dir filter endswith dir pkgdir parsefile joinpath pkgdir m Module label nothing v m Base m VERSION isfile joinpath pkgdir m VersionNumber pkgdir m isnothing label v VersionNumber v major v minor v patch label v build m occursin pkgdir m dir files String root _ fs walkdir dir fs push! files relpath joinpath root dir files m Module file pdir m contains pdir file relpath file pdir parts splitpath file i findfirst == parts isnothing i file joinpath parts i end m sym Symbol multidoc m sym isnothing multidoc String docstrings __plain_text multidoc docs sig sig multidoc order metadata multidoc docs sig data sig multidoc order docstrings metadata m Module symbol Symbol binding Base Docs Binding m symbol docs getproperty m Docs META get docs binding nothing e e UndefVarError nothing rethrow __plain_text d Base Docs DocStr d object MD plain d object buf IOBuffer part d text print buf part String take! buf m Module symbol Symbol x getfield m symbol x DataType isconcretetype x x Function x UnionAll isstructtype x x Module isconst m symbol m Module binds Tuple Module Symbol symbols Set Symbol modules Set Module s names m all imported startswith string s isdefined m s val getproperty m s val Module val m push! modules m val m push! binds _parentmodule m val s push! binds _parentmodule m val s push! symbols s mdep m push! binds mdep nameof mdep push! modules mdep foreach modules subm subm m name names subm name symbols isdefined m name push! binds subm name push! symbols name binds _parentmodule _ Module Function parentmodule _parentmodule _ Module DataType parentmodule _parentmodule Module m Module parentmodule m _parentmodule m Module _ m \n"
+    url = "ModuleInfo@dev/src/introspection.jl"
+    [[input.files]]
+    title = "packageview"
+    contents = "packageview"
+    url = "ModuleInfo@dev/ref/ModuleInfo.packageview"
+    [[input.files]]
+    title = "getfiles"
+    contents = "getfiles"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getfiles"
+    [[input.files]]
+    title = "ModuleInfo_"
+    contents = "ModuleInfo_"
+    url = "ModuleInfo@dev/ref/ModuleInfo.ModuleInfo_"
+    [[input.files]]
+    title = "h"
+    contents = "h"
+    url = "ModuleInfo@dev/ref/ModuleInfo.A.h"
+    [[input.files]]
+    title = "getentries"
+    contents = "getentries"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getentries"
+    [[input.files]]
+    title = "resolvebinding"
+    contents = "resolvebinding(pkgindex::PackageIndex, modulename, bindingname)\nresolvebinding(pkgindex::PackageIndex, modulenames, bindingname)\nSearch the package index for valid bindings for bindingname in the scope of one or more modulenames, returning a list of BindingInfos.\nExamples\nModuleInfo ModuleInfo pkgindex ModuleInfo pkgindex \nAll kinds of module accesses should resolve correctly if the relevant packages are indexed:\npkgindex \nThis includes dependency packages, if they are indexed:\npkgindex \n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.resolvebinding"
+    [[input.files]]
+    title = "PackageInfo"
+    contents = "PackageInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.PackageInfo"
+    [[input.files]]
+    title = "symbolkind"
+    contents = "symbolkind"
+    url = "ModuleInfo@dev/ref/ModuleInfo.symbolkind"
+    [[input.files]]
+    title = "AbstractInfo"
+    contents = "AbstractInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.AbstractInfo"
+    [[input.files]]
+    title = "ModuleInfo/find.jl"
+    contents = "pkgindex kwargs pkgindex packages kwargs pkgindex kwargs pkgindex modules kwargs pkgindex kwargs pkgindex files kwargs pkgindex kwargs pkgindex symbols kwargs pkgindex kwargs pkgindex docstrings kwargs pkgindex kwargs pkgindex methods kwargs pkgindex store Symbol kwargs kwargs getproperty pkgindex store xs I map xs view xs I filters obj k v filters getproperty obj k v filters Base Fix1 filters pkgindex id String pkgindex data packages pkgindex index packages id pkgindex info pkgindex info package_id pkgindex info pkgindex pkgindex info pkgindex id pkgindex data modules pkgindex index modules id pkgindex info pkgindex info module_id pkgindex info pkgindex symbols info symbol_id pkgindex id String pkgindex id pkgindex store Symbol id String store keys index getproperty pkgindex index store haskey index id nothing getproperty pkgindex data store index id pkgindex m String b String ret _resolvebinding pkgindex m split b binding isnothing ret nothing ModuleInfo pkgindex ret pkgindex ms Vector String b String filter isnothing map m pkgindex m b ms _resolvebinding pkgindex m String parts isempty parts nothing m parts _resolvebinding pkgindex m parts end length parts m only parts bi ModuleInfo pkgindex m parts isnothing bi _resolvebinding pkgindex bi symbol_id parts end nothing \n"
+    url = "ModuleInfo@dev/src/find.jl"
+    [[input.files]]
+    title = "getpackage"
+    contents = "getpackage"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getpackage"
+    [[input.files]]
+    title = "B"
+    contents = "B"
+    url = "ModuleInfo@dev/ref/ModuleInfo.A.B"
+    [[input.files]]
     title = "ModuleInfo/store.jl"
-    contents = "\n"
+    contents = "TData TIndex data TData index TIndex ms Vector Module cache kwargs cache cache Bool cache cache pkgindex visited Set String foreach m pkgindex m cache visited kwargs ms cache pkgindex pkgindex m Module kwargs m kwargs data NamedTuple data __createindex data Base show io IO pkgindex print io i k entries enumerate pairs pkgindex data n length entries printstyled io n bold print io name n string k end k print io name i length pkgindex data print io print io pkgindex data NamedTuple overwrite x Iterators flatten values data pkgindex x overwrite pkgindex Base getproperty pkgindex k Symbol data getfield pkgindex data k keys data data k getfield pkgindex k Base propertynames pkgindex keys getfield pkgindex data packages StructArray modules StructArray files StructArray symbols StructArray methods StructArray docstrings StructArray StructArray packages Dict String Int modules Dict String Int files Dict String Int symbols Dict String Int methods Dict String Int docstrings Dict String Int Dict String Int __createindex data NamedTuple k Dict x i i x enumerate xs k xs pairs data pkgindex ModuleInfo length pkgindex packages pkgindex symbols id pkgindex symbols name pkgindex ModuleInfo pkgindex pkgindex pkgindex pkgindex ModuleInfo recurse length pkgindex packages pkgindex ModuleInfo recurse packages length pkgindex packages mktempdir dir cache dir pkgindex ModuleInfo cache cache pkgindex packages \n"
     url = "ModuleInfo@dev/src/store.jl"
+    [[input.files]]
+    title = "packageid"
+    contents = "packageid"
+    url = "ModuleInfo@dev/ref/ModuleInfo.packageid"
+    [[input.files]]
+    title = "ModuleInfo"
+    contents = "ModuleInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo"
+    [[input.files]]
+    title = "newindex"
+    contents = "newindex"
+    url = "ModuleInfo@dev/ref/ModuleInfo.newindex"
+    [[input.files]]
+    title = "readtable"
+    contents = "readtable"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readtable"
+    [[input.files]]
+    title = "getmethods"
+    contents = "getmethods"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getmethods"
+    [[input.files]]
+    title = "getkey"
+    contents = "getkey"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getkey"
+    [[input.files]]
+    title = "readfromcache"
+    contents = "readfromcache(cache, m)\nreadfromcache(cache, pkgid)\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.readfromcache"
+    [[input.files]]
+    title = "exists"
+    contents = "exists"
+    url = "ModuleInfo@dev/ref/ModuleInfo.exists"
+    [[input.files]]
+    title = "FileInfo"
+    contents = "FileInfo"
+    url = "ModuleInfo@dev/ref/ModuleInfo.FileInfo"
+    [[input.files]]
+    title = "writetable"
+    contents = "writetable"
+    url = "ModuleInfo@dev/ref/ModuleInfo.writetable"
+    [[input.files]]
+    title = "runtests"
+    contents = "ModuleInfo.runtests(pattern...; kwargs...)\nEquivalent to ReTest.retest(ModuleInfo, pattern...; kwargs...). This function is defined automatically in any module containing a @testset, possibly nested within submodules.\n\n"
+    url = "ModuleInfo@dev/ref/ModuleInfo.runtests"
+    [[input.files]]
+    title = "g"
+    contents = "g"
+    url = "ModuleInfo@dev/ref/ModuleInfo.A.B.g"
+    [[input.files]]
+    title = "indexmodule!"
+    contents = "indexmodule!"
+    url = "ModuleInfo@dev/ref/ModuleInfo.indexmodule!"
+    [[input.files]]
+    title = "isfrommodule"
+    contents = "isfrommodule"
+    url = "ModuleInfo@dev/ref/ModuleInfo.isfrommodule"
+    [[input.files]]
+    title = "ModuleInfo/index.jl"
+    contents = "pkgindex info overwrite k id info info pkgindex info overwrite pkgindex data k pkgindex index k id info push! pkgindex data k info pkgindex index k id length pkgindex data k pkgindex info haskey pkgindex index info info pkgindex m Module overwrite recurse verbose cache packages nothing visited Set String pkgtags Dict String String m m id m dir files m pkgdir joinpath dir name m depms m dependencies map m_ m_ get pkgtags string m_ m_ depms info name id get pkgtags name string m pkgdir dependencies haskey pkgindex index packages info name visited isnothing packages name packages cache info data cache info pkgindex pkgindex data pkgindex info overwrite verbose print m file files isfile joinpath dir file pkgindex info file overwrite pkgindex info m overwrite verbose verbose print push! visited name recurse foreach sort m by fullname m_ pkgindex m_ overwrite recurse recurse verbose cache packages visited pkgindex pkgindex pkgid String m Module overwrite verbose pkgindex m m pkgid overwrite subm m subm pkgindex pkgid subm overwrite verbose symbol names m all imported pkgindex m symbol overwrite parentm symbol m symbol_id string parentm string symbol string symbol parentm symbol pkgindex m symbol string symbol m symbol_id Base isexported m symbol overwrite pkgindex m Module symbol Symbol overwrite m symbol m symbol instance getfield m symbol kind m symbol sid m symbol parentm kind m parentmodule instance info sid string symbol m parentm m nothing parentm Symbol kind Base isexported parentm symbol pkgindex info overwrite sid m kind parentm m isdefined parentm symbol parentm symbol parentm sid m m methods instance m module Core file m module string m file pkgindex sid m module file m line docstrs metas m symbol docstr meta zip docstrs metas file meta module meta path pkgindex sid meta module docstr file meta linenumber \n"
+    url = "ModuleInfo@dev/src/index.jl"
+    [[input.files]]
+    title = "filterfields"
+    contents = "filterfields"
+    url = "ModuleInfo@dev/ref/ModuleInfo.filterfields"
+    [[input.files]]
+    title = "submodules"
+    contents = "submodules"
+    url = "ModuleInfo@dev/ref/ModuleInfo.submodules"
+    [[input.files]]
+    title = "loadprojectfile"
+    contents = "loadprojectfile"
+    url = "ModuleInfo@dev/ref/ModuleInfo.loadprojectfile"
+    [[input.files]]
+    title = "indexsymbol!"
+    contents = "indexsymbol!"
+    url = "ModuleInfo@dev/ref/ModuleInfo.indexsymbol!"
+    [[input.files]]
+    title = "isvalidsymbol"
+    contents = "isvalidsymbol"
+    url = "ModuleInfo@dev/ref/ModuleInfo.isvalidsymbol"
+    [[input.files]]
+    title = "getdocstrings"
+    contents = "getdocstrings"
+    url = "ModuleInfo@dev/ref/ModuleInfo.getdocstrings"
