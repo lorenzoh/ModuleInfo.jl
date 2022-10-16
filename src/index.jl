@@ -129,6 +129,7 @@ function indexsymbol!(pkgindex::PackageIndex, m::Module, symbol::Symbol; overwri
         for m in methods(instance)
             m.module === Core && continue
             # TOOD: what if single line defines multiple methods?
+            m.file == :string && continue
             file = shortsrcpath(m.module, string(m.file))
             addentry!(pkgindex,
                       MethodInfo(sid, moduleid(m.module), file, m.line, "(::Signature)"))
