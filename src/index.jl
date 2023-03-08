@@ -36,9 +36,9 @@ function indexpackage!(pkgindex::PackageIndex, m::Module; overwrite = false, rec
     dir, files = packagefiles(m)
     pkgdir = joinpath(dir, "..")
     name = moduleid(m)
-    depms = getdepmodules(m)
+    depms = load_project_dependencies(m)
     dependencies = map(m_ -> "$m_@$(get(pkgtags, string(m_), packageversion(m_)))", depms)
-    info = PackageInfo(name, id, get(pkgtags, name, string(packageversion(m))), pkgdir,
+    info = PackageInfo(name, id, get(pkgtags, name, string(packageversion(m))), abspath(pkgdir),
                        dependencies)
 
     # TODO: fix overwrite
@@ -66,10 +66,9 @@ function indexpackage!(pkgindex::PackageIndex, m::Module; overwrite = false, rec
 
     # Descend into loaded submodules where available
     if recurse > 0
-        foreach(sort(getdepmodules(m), by = fullname)) do m_
+        foreach(sort(load_project_dependencies(m), by = fullname)) do m_
             indexpackage!(pkgindex, m_; overwrite = false, recurse = recurse - 1, verbose,
-                          cache,
-                          packages, visited)
+                          cache, packages, visited)
         end
     end
 

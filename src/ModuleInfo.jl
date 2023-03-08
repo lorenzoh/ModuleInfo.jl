@@ -10,6 +10,7 @@ import JSON3
 import StructTypes
 import TOML
 import Glob: glob
+using IOCapture: IOCapture
 
 const Maybe{T} = Union{Nothing, T}
 

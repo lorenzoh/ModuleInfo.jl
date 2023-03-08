@@ -59,12 +59,26 @@ function PackageIndex(ms::Vector{Module}; cache = true, kwargs...)
     cache = cache isa Bool ? (cache ? CACHE[] : NoCache()) : cache
     pkgindex = PackageIndex()
     visited = Set{String}()
-    foreach(m -> indexpackage!(pkgindex, m; cache, visited, kwargs...), ms)
+    foreach(ms) do m
+        indexpackage!(pkgindex, m; cache, visited, kwargs...)
+    end
     writecache(cache, pkgindex)
     return pkgindex
 end
+
 PackageIndex(m::Module; kwargs...) = PackageIndex([m]; kwargs...)
+
+function PackageIndex(project::String; kwargs...)
+    mod = load_project_module(project);
+    if Symbol(mod) === :Main
+        mod = load_project_dependencies(project)
+    end
+    PackageIndex(mod; kwargs...)
+end
+
 PackageIndex(data::NamedTuple) = PackageIndex(data, __createindex(data))
+
+
 function Base.show(io::IO, pkgindex::PackageIndex)
     print(io, "PackageIndex(")
     for (i, (k, entries)) in enumerate(pairs(pkgindex.data))

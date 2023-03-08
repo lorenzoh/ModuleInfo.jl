@@ -29,12 +29,22 @@ end
 function getpackage(pkgindex::PackageIndex, info::ModuleInfo_)
     getpackage(pkgindex, info.package_id)
 end
-function getpackage(pkgindex::PackageIndex, info::AbstractInfo)
-    getpackage(pkgindex, getmodule(pkgindex, info))
+function getpackage(pkgindex::PackageIndex, info::BindingInfo)
+    symbol = getsymbol(pkgindex, info)
+    isnothing(symbol) ? nothing : getpackage(pkgindex, symbol)
+end
+
+function getpackage(pkgindex::PackageIndex, info::SymbolInfo)
+    module_ = getmodule(pkgindex, info)
+    isnothing(module_) ? nothing : getpackage(pkgindex, module_)
 end
 
 getmodule(pkgindex::PackageIndex, id) = pkgindex.data.modules[pkgindex.index.modules[id]]
 getmodule(pkgindex::PackageIndex, info::SymbolInfo) = getmodule(pkgindex, info.module_id)
+function getmodule(pkgindex::PackageIndex, info::AbstractInfo)
+    symbol = getsymbol(pkgindex, info)
+    isnothing(symbol) ? nothing : getmodule(pkgindex, symbol)
+end
 function getsymbol(pkgindex::PackageIndex, info::BindingInfo)
     getentry(pkgindex, :symbols, info.symbol_id)
 end

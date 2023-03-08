@@ -64,8 +64,10 @@ function pkgsrcdir(m::Module)
     if m === Core
         throw(ArgumentError("Tracking Core is not supported yet!"))
     end
-    return if m === Base
+    if m === Base
         abspath(joinpath(Sys.BINDIR, "..", "share", "julia", "base"))
+    elseif Symbol(m) === :Main
+        return "Main"
     else
         pdir = Pkg.pkgdir(m)
         if isnothing(pdir)
@@ -81,7 +83,7 @@ function packagefiles(m::Module)
     return dir, filter(endswith(".jl"), readdirrecursive(dir))
 end
 
-function loadprojectfile(pkgdir)
+@memoize function loadprojectfile(pkgdir)
     TOML.parsefile(joinpath(pkgdir, "Project.toml"))
 end
 
@@ -196,7 +198,7 @@ function bindings(m::Module)
         end
     end
 
-    for mdep in getdepmodules(m)
+    for mdep in get_module_bindings(m)
         push!(binds, (mdep, nameof(mdep)))
         push!(modules, mdep)
     end
